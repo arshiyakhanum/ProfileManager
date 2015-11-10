@@ -1,0 +1,10 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.arshiya.mapsapi.geofence.ui.RemoveGeofences">
+    <item
+        android:id="@+id/action_delete_all"
+        android:orderInCategory="100"
+        android:title="@string/delete_all"
+        app:showAsAction="never" />
+</menu>

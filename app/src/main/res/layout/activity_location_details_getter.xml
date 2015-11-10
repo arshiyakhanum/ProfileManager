@@ -1,0 +1,113 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.arshiya.mapsapi.LocationDetailsGetter"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/area_name_holder"
+        android:paddingBottom="20dp">
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/area_name"
+            android:hint="@string/area_name"
+            android:textSize="20sp"
+            android:singleLine="true"
+            android:padding="2dp"
+            android:background="@drawable/custom_edittextbox"
+            android:textColor="@color/blackO60"
+            />
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/profile_btn_holder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="24dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/profile_type_header"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:text="@string/profile_type_header"
+            />
+
+        <RadioGroup
+            android:id="@+id/rg_progress_update"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:textAlignment="center">
+
+            <RadioButton
+                android:id="@+id/rb_silent"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:paddingLeft="16dp"
+                android:text="@string/silent"
+                android:button="@drawable/custom_radio_button"
+                android:textColor="@color/blackO70"
+                android:textSize="20sp" />
+
+            <RadioButton
+                android:id="@+id/rb_normal"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:paddingLeft="16dp"
+                android:button="@drawable/custom_radio_button"
+                android:text="@string/normal"
+                android:textColor="@color/blackO70"
+                android:textSize="20sp" />
+
+            <RadioButton
+                android:id="@+id/rb_vibrate"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:paddingLeft="16dp"
+                android:text="@string/vibrate"
+                android:button="@drawable/custom_radio_button"
+                android:textColor="@color/blackO70"
+                android:textSize="20sp" />
+
+        </RadioGroup>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/profile_type_option_dialog_ok"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:background="@null"
+            android:text="@string/ok"
+            android:textColor="@color/blue"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/profile_type_option_dialog_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@+id/profile_type_option_dialog_ok"
+            android:background="@null"
+            android:text="@string/cancel"
+            android:textColor="@color/blue"
+            android:textSize="20sp" />
+    </RelativeLayout>
+
+
+</LinearLayout>

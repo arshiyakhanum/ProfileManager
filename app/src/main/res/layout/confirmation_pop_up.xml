@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_margin="48dp"
+    android:paddingTop="24dp"
+    android:paddingLeft="24dp"
+    android:paddingRight="24dp"
+    android:paddingBottom="8dp"
+    android:background="@color/white">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/ca_title"
+        android:textSize="20sp"
+        android:layout_marginBottom="8dp"
+        android:textColor="@android:color/holo_blue_dark"
+        android:background="@null"
+        android:text="confirmation text"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/holo_blue_dark"
+        android:layout_marginBottom="24dp"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/ca_description"
+        android:textSize="14sp"
+        android:textColor="@android:color/black"
+        android:lineSpacingExtra="8dp"
+        android:background="@null"
+        android:layout_marginBottom="24dp"
+        android:text="confirmation description"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/ca_assert"
+        android:textSize="14sp"
+        android:background="@null"
+        android:textColor="@color/white"
+        android:layout_marginBottom="24dp"
+        android:text="confirmation assert text"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:background="@null"
+        android:id="@+id/ca_button_holder">
+
+        <Button
+            android:id="@+id/ca_ok"
+            android:layout_width="wrap_content"
+            android:layout_height="52dp"
+            android:layout_alignParentRight="true"
+            android:background="@null"
+            android:text="@string/ok"
+            android:textColor="@color/blue2"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/ca_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="52dp"
+            android:layout_marginRight="8dp"
+            android:layout_toLeftOf="@+id/ca_ok"
+            android:background="@null"
+            android:text="@string/cancel"
+            android:textColor="@color/blue2"
+            android:textSize="20sp" />
+    </RelativeLayout>
+</LinearLayout>

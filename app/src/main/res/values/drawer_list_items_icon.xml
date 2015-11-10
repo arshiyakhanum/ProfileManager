@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="drawer_list_item_icons">
+        <item>@drawable/ic_action</item>
+        <item>@drawable/ic_action</item>
+        <item>@drawable/ic_action</item>
+        <item>@drawable/ic_action</item>
+    </array>
+</resources>

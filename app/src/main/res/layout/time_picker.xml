@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:padding="@dimen/activity_vertical_margin">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="10dp">
+
+        <TextView
+            android:id="@+id/from_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="8dp"
+            android:text="@string/from"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/from_time_selection"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/time"
+            android:textColor="@color/blackO60"
+            android:textSize="20sp" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/circle_ouline_blue" />
+
+    <LinearLayout
+        android:id="@+id/tp_time_picker"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:padding="@dimen/activity_horizontal_margin">
+
+        <LinearLayout
+            android:id="@+id/hour_holder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/tp_hour_plus"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:background="@drawable/up_arrow"
+                android:onClick="OnClick"
+                android:gravity="center_horizontal"
+                android:clickable="true"/>
+
+            <EditText
+                android:id="@+id/tp_hour"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:gravity="center"
+                android:text="@string/hour"
+                android:maxLength="2"
+                android:ems="3"
+                android:background="@drawable/custom_edittextbox"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:inputType="number"/>
+
+            <Button
+                android:id="@+id/tp_hour_minus"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:background="@drawable/down_arrow"
+                android:onClick="OnClick"
+                android:gravity="center_horizontal"
+                android:clickable="true"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/minute_holder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/tp_minute_plus"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:background="@drawable/up_arrow"
+                android:onClick="OnClick"
+                android:clickable="true"/>
+
+            <EditText
+                android:id="@+id/tp_minute"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:gravity="center"
+                android:text="@string/minute"
+                android:maxLength="2"
+                android:ems="3"
+                android:background="@drawable/custom_edittextbox"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:inputType="number"/>
+
+            <Button
+                android:id="@+id/tp_minute_minus"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:background="@drawable/down_arrow"
+                android:onClick="OnClick"
+                android:clickable="true"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/gs_btn_holder"
+        android:layout_width="match_parent"
+        android:layout_height="52dp">
+
+        <Button
+            android:id="@+id/tp_save"
+            android:layout_width="wrap_content"
+            android:layout_height="52dp"
+            android:layout_alignParentRight="true"
+            android:background="@null"
+            android:text="@string/save"
+            android:textColor="@color/blue2"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/tp_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="52dp"
+            android:layout_marginRight="16dp"
+            android:layout_toLeftOf="@+id/tp_save"
+            android:background="@null"
+            android:text="@string/cancel"
+            android:textColor="@color/blue2"
+            android:textSize="20sp" />
+
+    </RelativeLayout>
+
+
+</LinearLayout>

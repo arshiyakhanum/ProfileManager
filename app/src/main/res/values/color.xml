@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#ff000000</color>
+    <color name="blackO60">#99000000</color>
+    <color name="blackO70">#B3000000</color>
+    <color name="blackO10">#1A000000</color>
+    <color name="transparent">#13C6C6C6</color>
+    <color name="backgroundColor">#25282b</color>
+    <color name="red">#d30f0f</color>
+    <color name="red_outer">#A00B09</color>
+    <color name="redO30">#4DA00B09</color>
+    <color name="green">#279149</color>
+    <color name="greenO30">#4D279149</color>
+    <color name="circle_ouline_blue">#0076a9</color>
+    <color name="circle_stroke_blue">#4D0076a9</color>
+    <color name="blue">#00b1ff</color>
+    <color name="blue2">#049dd9</color>
+    <color name="action_bar">#e4e4e4</color>
+    <color name="blueO40">#6600b1ff</color>
+    <color name="blueO70">#4D00b1ff</color>
+    <color name="white">#ffffff</color>
+    <color name="registration">#ff313236</color>
+    <color name="whiteO40">#66ffffff</color>
+    <color name="whiteO30">#4Dffffff</color>
+    <color name="whiteO70">#B3ffffff</color>
+    <color name="whiteO60">#99ffffff</color>
+    <color name="background2">#303135</color>
+    <color name="hint_color">#bcbcbc</color>
+    <color name="grey">#3f4247</color>
+    <color name="shadow">#303140</color>
+    <color name="light_grey">#FF93979C</color>
+    <color name="up_bg">#303030</color>
+    <color name="transparent100">#00000000</color>
+    <color name="pop_up_background">#414141</color>
+    <color name="background3">#303030</color>
+    <color name="pop_up_divider">#555555</color>
+
+    <color name="divider">#3f4247</color>
+
+    <!--100% — FF-->
+    <!--95% — F2-->
+    <!--90% — E6-->
+    <!--85% — D9-->
+    <!--80% — CC-->
+    <!--75% — BF-->
+    <!--70% — B3-->
+    <!--65% — A6-->
+    <!--60% — 99-->
+    <!--55% — 8C-->
+    <!--50% — 80-->
+    <!--45% — 73-->
+    <!--40% — 66-->
+    <!--35% — 59-->
+    <!--30% — 4D-->
+    <!--25% — 40-->
+    <!--20% — 33-->
+    <!--15% — 26-->
+    <!--10% — 1A-->
+    <!--5% — 0D-->
+    <!--0% — 00-->
+</resources>

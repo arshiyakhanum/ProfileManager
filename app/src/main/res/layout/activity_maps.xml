@@ -1,0 +1,58 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.arshiya.mapsapi.MapsActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:padding="8dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/white">
+
+        <Button
+            android:id="@+id/btn_find"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:gravity="center"
+            android:background="@drawable/search"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true" />
+
+        <ProgressBar
+            android:indeterminate="true"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:id="@+id/maps_progressBar"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/btn_find"
+            android:layout_centerInParent="true"
+            android:visibility="gone"
+            android:indeterminateDrawable="@drawable/progressbar_circle"
+            />
+
+        <com.arshiya.mapsapi.CustomAutoCompleteTextView
+            android:id="@+id/et_location"
+            android:layout_width="fill_parent"
+            android:layout_marginTop="12dp"
+            android:layout_height="48dp"
+            android:gravity="center_vertical"
+            android:singleLine="true"
+            android:textSize="16sp"
+            android:layout_toLeftOf="@id/maps_progressBar"
+            android:textColor="@color/blackO60"
+            android:background="@null"
+            android:hint="@string/hnt_et_location"
+            android:inputType="text" />
+
+    </RelativeLayout>
+
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/map"
+        class="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>

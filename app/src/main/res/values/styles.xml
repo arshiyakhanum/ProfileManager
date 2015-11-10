@@ -1,0 +1,13 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <!--<style name="MyTheme" parent="Theme.AppCompat">-->
+        <!--&lt;!&ndash;<item name="android:textColor">@color/red</item>&ndash;&gt;-->
+        <!--<item name="android:homeAsUpIndicator">@drawable/ic_arrow</item>-->
+        <!--<item name="android:textColorSecondary">@color/white</item>-->
+        <!--<item name="android:background">@color/backgroundColor</item>-->
+        <!--&lt;!&ndash;<item name="android:listViewStyle">@style/CustomOptionsMenuStyle</item>&ndash;&gt;-->
+    <!--</style>-->
+
+
+</resources>
