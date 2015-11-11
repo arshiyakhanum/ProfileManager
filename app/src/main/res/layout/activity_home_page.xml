@@ -68,6 +68,7 @@
                     android:layout_marginTop="20dp"
                     android:gravity="center"
                     android:text="@string/location_header"
+                    android:visibility="gone"
                     android:layout_marginBottom="16dp"
                     android:textColor="@android:color/black"
                     android:textSize="20sp" />
@@ -79,11 +80,12 @@
                     android:layout_below="@+id/location_header"
                     android:gravity="center_horizontal"
                     android:lineSpacingExtra="8dp"
+                    android:layout_marginTop="18dp"
                     android:text="@string/searching_cation"
                     android:layout_alignLeft="@+id/home_add_location"
                     android:layout_alignRight="@+id/home_add_location"
-                    android:textColor="@color/blackO60"
-                    android:textSize="14sp" />
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
 
                 <Button
                     android:id="@+id/home_add_location"

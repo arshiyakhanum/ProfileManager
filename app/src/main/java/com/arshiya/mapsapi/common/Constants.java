@@ -15,7 +15,7 @@ public class Constants {
 
     public static int NORMAL_VOLUME_LEVEL = 5;
 
-    public static final int GEOFENCE_RADIUS = 20;
+    public static final int GEOFENCE_RADIUS = 100;
     public static final int GEOFENCE_LOITERING_DELAY = 3 * 1000;
 
     public static final int ACTION_SEARCH = 10;
