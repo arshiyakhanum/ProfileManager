@@ -23,6 +23,8 @@ import com.arshiya.mapsapi.common.Constants;
 import com.arshiya.mapsapi.common.Fonts;
 import com.arshiya.mapsapi.storage.sharedpreference.ProfileManagerSharedPref;
 
+import org.w3c.dom.Text;
+
 import java.util.Calendar;
 
 public class Settings extends Activity implements CompoundButton.OnCheckedChangeListener, View.OnClickListener {
@@ -64,7 +66,19 @@ public class Settings extends Activity implements CompoundButton.OnCheckedChange
         mFromTime = (TextView)findViewById(R.id.from_time);
         mToTime = (TextView)findViewById(R.id.to_time);
 
+        TextView nightMode = (TextView) findViewById(R.id.dnd_header);
+        TextView description = (TextView) findViewById(R.id.dnd_description);
+        TextView scheduler = (TextView) findViewById(R.id.schedule_header);
+        TextView fromHeader = (TextView) findViewById(R.id.from_time_header);
+        TextView toHeader = (TextView) findViewById(R.id.to_time_header);
 
+        nightMode.setTypeface(Fonts.ROBOTOMEDIUM);
+        description.setTypeface(Fonts.ROBOTOREGULAR);
+        scheduler.setTypeface(Fonts.ROBOTOMEDIUM);
+        fromHeader.setTypeface(Fonts.ROBOTOREGULAR);
+        toHeader.setTypeface(Fonts.ROBOTOREGULAR);
+        mFromTime.setTypeface(Fonts.ROBOTOMEDIUM);
+        mToTime.setTypeface(Fonts.ROBOTOMEDIUM);
 
         mFromLayout.setOnClickListener(this);
         mToLayout.setOnClickListener(this);

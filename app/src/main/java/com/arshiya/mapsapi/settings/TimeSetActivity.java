@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.arshiya.mapsapi.MainActivity;
 import com.arshiya.mapsapi.R;
 import com.arshiya.mapsapi.common.Constants;
+import com.arshiya.mapsapi.common.Fonts;
 import com.arshiya.mapsapi.storage.sharedpreference.ProfileManagerSharedPref;
 
 import java.util.Calendar;
@@ -66,21 +67,28 @@ public class TimeSetActivity extends Activity implements View.OnClickListener {
         mCancel = (Button) findViewById(R.id.tp_cancel);
         mTitle_text = (TextView) findViewById(R.id.from_header);
 
+        mTp_hour.setTypeface(Fonts.ROBOTOREGULAR);
+        mTp_minute.setTypeface(Fonts.ROBOTOREGULAR);
+        mTitle_time.setTypeface(Fonts.ROBOTOMEDIUM);
+        mTitle_text.setTypeface(Fonts.ROBOTOMEDIUM);
+        mCancel.setTypeface(Fonts.ROBOTOMEDIUM);
+        mSave.setTypeface(Fonts.ROBOTOMEDIUM);
+
         mTp_minute.setFilters(new InputFilter[]{new CustomInputFilter("0", "59") });
         mTp_hour.setFilters(new InputFilter[]{new CustomInputFilter("0", "23") });
 
         mType = getIntent().getIntExtra("type", 0);
 
         if ( mType == Constants.FROM_TIME) {
-            mTitle_text.setText("From :");
+            mTitle_time.setText("Start time");
 
         } else {
-            mTitle_text.setText("To :");
+            mTitle_time.setText("End time");
+
         }
 
         Calendar now = Calendar.getInstance();
 
-        mTitle_time.setText(now.get(Calendar.HOUR_OF_DAY) + " : " + now.get(Calendar.MINUTE));
         mHourCount = now.get(Calendar.HOUR_OF_DAY);
         mMinuteCount = now.get(Calendar.MINUTE);
         mTp_hour.setText(String.valueOf(mHourCount));
@@ -95,44 +103,6 @@ public class TimeSetActivity extends Activity implements View.OnClickListener {
                 finish();
             }
         });
-
-        mTp_hour.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                mTitle_time.setText(String.valueOf(mHourCount) + " : " + String.valueOf(mMinuteCount));
-
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-
-        mTp_minute.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                mTitle_time.setText(String.valueOf(mHourCount) + " : " + String.valueOf(mMinuteCount));
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-
     }
 
     public void OnClick(View view) {
@@ -178,20 +148,6 @@ public class TimeSetActivity extends Activity implements View.OnClickListener {
 
 
         }
-        String hour = "";
-        String minute = "";
-
-        if (mHourCount < 10){
-            hour = "0" + String.valueOf(mHourCount);
-        }else {
-            hour = String.valueOf(mHourCount);
-        }
-        if (mMinuteCount < 10){
-            minute = "0" + String.valueOf(mMinuteCount);
-        }else {
-            minute = String.valueOf(mMinuteCount);
-        }
-        mTitle_time.setText(hour + " : " + minute);
 
     }
 
@@ -221,15 +177,15 @@ public class TimeSetActivity extends Activity implements View.OnClickListener {
         switch (mType){
             case Constants.FROM_TIME:
                 Bundle startBundle = new Bundle();
-                startBundle.putInt("start_hour", mHourCount);
-                startBundle.putInt("start_minute", mMinuteCount);
+                startBundle.putInt("start_hour", Integer.parseInt(mTp_hour.getText().toString()));
+                startBundle.putInt("start_minute", Integer.parseInt(mTp_minute.getText().toString()));
                 mProfileManagerSharedPref.setStartTime(startBundle);
                 break;
 
             case Constants.TO_TIME:
                 Bundle endBundle = new Bundle();
-                endBundle.putInt("end_hour", mHourCount);
-                endBundle.putInt("end_minute", mMinuteCount);
+                endBundle.putInt("end_hour", Integer.parseInt(mTp_hour.getText().toString()));
+                endBundle.putInt("end_minute", Integer.parseInt(mTp_minute.getText().toString()));
                 mProfileManagerSharedPref.setEndTime(endBundle);
                 break;
 

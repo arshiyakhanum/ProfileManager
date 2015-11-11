@@ -17,7 +17,7 @@ public class ProfileManagerSharedPref {
     private static SharedPreferences mPreferences;
     private static Context mContext;
     private static SharedPreferences.Editor mEditor;
-    private static final ProfileManagerSharedPref PROFILE_MANAGER_SHARED_PREF= new ProfileManagerSharedPref();
+    private static final ProfileManagerSharedPref PROFILE_MANAGER_SHARED_PREF = new ProfileManagerSharedPref();
 
     /**
      * returns single object of the shared preferences.
@@ -36,51 +36,79 @@ public class ProfileManagerSharedPref {
 
     }
 
-    public void saveAddress(String address, LatLng latLng){
+    public void saveAddress(String address, LatLng latLng) {
         mEditor.putString("saved_latng", latLng.toString());
         mEditor.putString("saved_address", address);
         mEditor.apply();
 
     }
-    public String getSavedAddress(LatLng latLng){
+
+    public String getSavedAddress(LatLng latLng) {
         String saved_latlng = mPreferences.getString("saved_latlng", String.valueOf(0.0));
 
-        if (saved_latlng.equalsIgnoreCase(latLng.toString())){
+        if (saved_latlng.equalsIgnoreCase(latLng.toString())) {
             return mPreferences.getString("saved_address", "");
         }
         return "";
     }
-    public Bundle getNormalSettings(){
+
+    public Bundle getNormalSettings() {
         Bundle normalSettings = new Bundle();
         int volumeLevel = mPreferences.getInt("normal_volume_level", Constants.NORMAL_VOLUME_LEVEL);
         normalSettings.putInt("level", volumeLevel);
         return normalSettings;
     }
 
-    public boolean isNightModeEnabled(){
+    public boolean isNightModeEnabled() {
         return mPreferences.getBoolean("night_mode_state", false);
     }
 
-    public void setNightMode(boolean state){
+    public void setNightMode(boolean state) {
         mEditor.putBoolean("night_mode_state", state);
         mEditor.apply();
     }
 
-    public String getStartTimeString(){
+    public String getStartTimeString() {
         int hour = mPreferences.getInt("start_hour", 22);
         int minute = mPreferences.getInt("start_minute", 0);
+        String hourStr;
+        String minStr;
 
-        return hour + " : " + minute;
+        if (hour < 10) {
+            hourStr = "0" + String.valueOf(hour);
+        } else {
+            hourStr = String.valueOf(hour);
+        }
+        if (minute < 10) {
+            minStr = "0" + String.valueOf(minute);
+        } else {
+            minStr = String.valueOf(minute);
+        }
+
+        return hourStr + " : " + minStr;
     }
 
-    public String getEndTimeString(){
+    public String getEndTimeString() {
         int hour = mPreferences.getInt("end_hour", 7);
         int minute = mPreferences.getInt("end_minute", 0);
+        String hourStr;
+        String minStr;
 
-        return hour + " : " + minute;
+        if (hour < 10) {
+            hourStr = "0" + String.valueOf(hour);
+        } else {
+            hourStr = String.valueOf(hour);
+        }
+        if (minute < 10) {
+            minStr = "0" + String.valueOf(minute);
+        } else {
+            minStr = String.valueOf(minute);
+        }
+
+        return hourStr + " : " + minStr;
     }
 
-    public Bundle getStartTime(){
+    public Bundle getStartTime() {
         Bundle startTime = new Bundle();
 
         int hour = mPreferences.getInt("start_hour", 22);
@@ -93,17 +121,17 @@ public class ProfileManagerSharedPref {
 
     }
 
-    public void setStartTime(Bundle startTime){
-        int hour = startTime.getInt("start_hour",22);
-        int minute = startTime.getInt("start_minute",0);
+    public void setStartTime(Bundle startTime) {
+        int hour = startTime.getInt("start_hour", 22);
+        int minute = startTime.getInt("start_minute", 0);
 
-        mEditor.putInt("start_hour",hour);
-        mEditor.putInt("start_minute",minute);
+        mEditor.putInt("start_hour", hour);
+        mEditor.putInt("start_minute", minute);
         mEditor.apply();
 
     }
 
-    public Bundle getEndTime(){
+    public Bundle getEndTime() {
         Bundle endTime = new Bundle();
 
         int hour = mPreferences.getInt("end_hour", 7);
@@ -116,20 +144,20 @@ public class ProfileManagerSharedPref {
 
     }
 
-    public void setEndTime(Bundle endTime){
-        int hour = endTime.getInt("end_hour",7);
-        int minute = endTime.getInt("end_minute",0);
+    public void setEndTime(Bundle endTime) {
+        int hour = endTime.getInt("end_hour", 7);
+        int minute = endTime.getInt("end_minute", 0);
 
-        mEditor.putInt("end_hour",hour);
-        mEditor.putInt("end_minute",minute);
+        mEditor.putInt("end_hour", hour);
+        mEditor.putInt("end_minute", minute);
         mEditor.apply();
     }
 
-    public boolean isAlarmSet(){
+    public boolean isAlarmSet() {
         return mPreferences.getBoolean("night_alarm", false);
     }
 
-    public void setAlarm(Boolean status){
+    public void setAlarm(Boolean status) {
         mEditor.putBoolean("night_alarm", status);
         mEditor.apply();
     }

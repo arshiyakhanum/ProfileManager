@@ -39,7 +39,8 @@ import com.google.android.gms.maps.model.CircleOptions;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RemoveGeofences extends Activity implements LoaderManager.LoaderCallbacks<Cursor>, GeofenceCustomAdapter.AdapterCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, ResultCallback<Status> {
+public class RemoveGeofences extends Activity implements LoaderManager.LoaderCallbacks<Cursor>, GeofenceCustomAdapter.AdapterCallback,
+        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, ResultCallback<Status> {
 
     private static final String TAG = RemoveGeofences.class.getSimpleName();
     private ListView mGeofencesList;

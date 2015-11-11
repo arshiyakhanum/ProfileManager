@@ -82,7 +82,6 @@
                     android:text="@string/searching_cation"
                     android:layout_alignLeft="@+id/home_add_location"
                     android:layout_alignRight="@+id/home_add_location"
-                    android:textStyle="italic"
                     android:textColor="@color/blackO60"
                     android:textSize="14sp" />
 

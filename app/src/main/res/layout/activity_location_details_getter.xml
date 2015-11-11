@@ -21,6 +21,7 @@
             android:id="@+id/area_name"
             android:hint="@string/area_name"
             android:textSize="20sp"
+            android:textCursorDrawable="@drawable/blue_cursor"
             android:singleLine="true"
             android:padding="2dp"
             android:background="@drawable/custom_edittextbox"
@@ -94,7 +95,7 @@
             android:layout_alignParentEnd="true"
             android:background="@null"
             android:text="@string/ok"
-            android:textColor="@color/blue"
+            android:textColor="@color/circle_ouline_blue"
             android:textSize="20sp" />
 
         <Button
@@ -105,7 +106,7 @@
             android:layout_toLeftOf="@+id/profile_type_option_dialog_ok"
             android:background="@null"
             android:text="@string/cancel"
-            android:textColor="@color/blue"
+            android:textColor="@color/circle_ouline_blue"
             android:textSize="20sp" />
     </RelativeLayout>
 

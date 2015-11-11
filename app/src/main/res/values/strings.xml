@@ -18,7 +18,7 @@
     <string name="rb_area">Area</string>
     <string name="rb_place">Places</string>
     <string name="ok">OK</string>
-    <string name="cancel">Cancel</string>
+    <string name="cancel">CANCEL</string>
     <string name="title_activity_location_details_getter">LocationDetailsGetter</string>
     <string name="area_name">location name</string>
     <string name="silent">Silent</string>
@@ -67,10 +67,11 @@
     <string name="from">From :</string>
     <string name="time">time</string>
     <string name="to">To :</string>
-    <string name="save">Save</string>
+    <string name="save">SAVE</string>
     <string name="hour">hour</string>
     <string name="minute">minutes</string>
     <string name="title_activity_time_set">TimeSetActivity</string>
     <string name="view_locations">View Locations</string>
+    <string name="tp_header">Night mode :</string>
 
 </resources>

@@ -29,6 +29,11 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.arshiya.mapsapi.common.Fonts;
+import com.arshiya.mapsapi.errordisplay.AlertDialogClass;
+import com.arshiya.mapsapi.geofence.GeofenceCallbacks;
+import com.arshiya.mapsapi.geofence.MapUtils;
+import com.arshiya.mapsapi.storage.ConfirmationDialog;
 import com.arshiya.mapsapi.storage.contentprovider.InsertTaskManager;
 import com.arshiya.mapsapi.geofence.MapDataProvider;
 import com.arshiya.mapsapi.common.Constants;
@@ -55,11 +60,7 @@ import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Polygon;
-import com.google.android.gms.maps.model.PolygonOptions;
-import com.google.android.gms.maps.model.PolylineOptions;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -68,7 +69,7 @@ import java.util.HashMap;
 
 public class MapsActivity extends FragmentActivity implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, View.OnClickListener, GoogleMap.OnMapClickListener,
-        GoogleMap.OnMarkerClickListener, GoogleMap.OnMapLongClickListener, GoogleMap.OnMapLoadedCallback {
+        GoogleMap.OnMarkerClickListener, GoogleMap.OnMapLongClickListener, GoogleMap.OnMapLoadedCallback, ConfirmationDialog.OnClickCallback {
 
     private static final String TAG = MapsActivity.class.getSimpleName();
     private static final int CONNECTION_FAILURE_RESOLUTION_REQUEST = 100;
@@ -84,14 +85,8 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.Co
     private MarkerOptions mMarkerOptions;
     private PlacesAutocomplete mPlacesAutocomplete;
     private ArrayList<LatLng> mArrayLatLngs;
-    private HashMap<String, LatLng> mLatLngHashMap;
-    private ArrayList<LatLng> mLatArrayLists;
-    private ArrayList<Marker> mMarkerArrayList;
-    private PolylineOptions mPolylineOptions;
-    private PolygonOptions mPolygonOptions;
-    private Polygon mPolygon;
-    private AlertDialog.Builder mBuilder;
     private AlertDialog mDialog;
+    private AlertDialog mNewLocationDialog;
     private InsertTaskManager mInsertTaskManager;
     private int mLocationType;
     private LatLng mSelectedLatLng;
@@ -104,6 +99,7 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.Co
     private ArrayList<CircleOptions> mCircleOptionsArrayList;
     private ArrayList<MarkerOptions> mMarkerOptionsArrayList;
     private Marker mSelectedMarker;
+    private Circle mSelectedCircle;
 
 
     @Override
@@ -128,22 +124,18 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.Co
     }
 
     private void init() {
-        //build alert dialog and alert dialog builder
-        mBuilder = new AlertDialog.Builder(this);
-        mDialog = mBuilder.create();
-
+        geofenceResultCallback();
         mSearchProgress = (ProgressBar) findViewById(R.id.maps_progressBar);
 
         mInsertTaskManager = InsertTaskManager.getInsertTaskManagerInstance(this);
         mFind = (Button) findViewById(R.id.btn_find);
         mUserInput = (AutoCompleteTextView) findViewById(R.id.et_location);
+        mUserInput.setTypeface(Fonts.ROBOTOREGULAR);
 
         mFind.setOnClickListener(this);
 
 
         mArrayLatLngs = new ArrayList<LatLng>();
-        mMarkerArrayList = new ArrayList<Marker>();
-        mLatLngHashMap = new HashMap<String, LatLng>();
 
         mPlacesAutocomplete = PlacesAutocomplete.getInstance();
 
@@ -171,6 +163,7 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.Co
         });
     }
 
+
     private void loadGeofences() {
         MapDataProvider mapDataProvider = new MapDataProvider(this);
         mCircleOptionsArrayList = new ArrayList<CircleOptions>();
@@ -194,10 +187,8 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.Co
         boolean gpsEnabled = mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 
         if (!gpsEnabled) {
-            //TODO add dialog
-            Toast.makeText(this, "Please turn on GPS", Toast.LENGTH_SHORT).show();
-            Intent gpsIntent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-            startActivity(gpsIntent);
+            mDialog = ConfirmationDialog.getDialog(MapsActivity.this, "Turn on GPS", "Please turn on GPS to get your location.", "");
+            mDialog.show();
         } else {
             Log.d(TAG, "GPS is enabled");
         }
@@ -213,8 +204,7 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.Co
 
         if (!is_connected) {
             Log.d(TAG, " : connected to network : " + is_connected);
-            Toast.makeText(this, " please check your internet connection ", Toast.LENGTH_SHORT).show();
-            //TODO show error alert
+            AlertDialogClass.showAlert(this, "please check your internet connection ");
         } else
 
         {
@@ -243,6 +233,7 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.Co
     @Override
     protected void onResume() {
         super.onResume();
+
         setUpMapIfNeeded();
 
         if (null != mGoogleApiClient) {
@@ -290,8 +281,8 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.Co
                 mMap.setMyLocationEnabled(true);
                 mMap.setTrafficEnabled(true);
                 mMap.getUiSettings().setMyLocationButtonEnabled(true);
-                mMap.getUiSettings().setMapToolbarEnabled(true);
                 mMap.animateCamera(CameraUpdateFactory.zoomTo(17.0f));
+                mMap.getUiSettings().setMapToolbarEnabled(false);
                 mMap.setOnMapClickListener(this);
                 mMap.setOnMapLongClickListener(this);
                 mMap.setOnMapLoadedCallback(this);
@@ -316,7 +307,6 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.Co
             mMap.addMarker(new MarkerOptions().position(new LatLng(mLocation.getLatitude(), mLocation.getLongitude()))
                     .title("Marker"));
         } else {
-            Toast.makeText(this, "Could not fetch your location", Toast.LENGTH_SHORT).show();
             mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
         }
     }
@@ -422,14 +412,15 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.Co
         mSelectedMarker = mMap.addMarker(markerOptions);
         Log.d(TAG, "Marker added : " + mSelectedMarker);
 
-        //TODO dialog prompting add location confirmation
         // get address from latlng
         GeoCoderFetchAddress.getInstance().init(this, latLng, new Messenger(new ResultHandler()));
+       mSelectedCircle = mMap.addCircle(MapUtils.getCircle(MapsActivity.this, mSelectedLatLng));
 
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                showDialog("New Location", "Add location: \n", "");
+                mNewLocationDialog = ConfirmationDialog.getDialog(MapsActivity.this, "New Location", "Add location: \n" + mSelectedAddress, "");
+                mNewLocationDialog.show();
             }
         }, 500);
 
@@ -437,7 +428,6 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.Co
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        //TODO dialog prompting delete location confirmation
         Log.d(TAG, " LatLng :" + marker.getPosition());
         return false;
     }
@@ -467,6 +457,36 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.Co
 
             }
         };
+    }
+
+    @Override
+    public void onClickCD(int state) {
+        switch (state) {
+            case Constants.ACTION_OK:
+                if (null != mDialog && mDialog.isShowing()) {
+                    Intent gpsIntent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    startActivity(gpsIntent);
+                    mDialog.dismiss();
+                }
+                if (null != mNewLocationDialog && mNewLocationDialog.isShowing()) {
+                    Intent intent = new Intent(MapsActivity.this, LocationDetailsGetter.class);
+                    startActivityForResult(intent, PROFILE_TYPE_OPTION_DIALOG);
+                    loadGeofences();
+                    mNewLocationDialog.dismiss();
+                }
+                break;
+
+            case Constants.ACTON_CANCEL:
+                if (null != mDialog && mDialog.isShowing()) {
+                    mDialog.dismiss();
+                }
+                if (null != mNewLocationDialog && mNewLocationDialog.isShowing()) {
+                    mSelectedMarker.remove();
+                    mSelectedCircle.remove();
+                    mNewLocationDialog.dismiss();
+                }
+                break;
+        }
     }
 
 //
@@ -588,7 +608,7 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.Co
 
             case 1:
                 //ok
-//                prepareAreaData(data);
+                loadGeofences();
                 prepareData(data);
                 createGeofence();
                 break;
@@ -600,23 +620,28 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.Co
     }
 
     private void createGeofence() {
-        //create a geofence for the selected latlng
-        if (null == mGoogleApiClient || !mGoogleApiClient.isConnected()) {
-            //todo error dialog
-            Toast.makeText(this, "google api client is not connected", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        try {
-            LocationServices.GeofencingApi.addGeofences(
-                    mGoogleApiClient,
-                    getGeofencingRequest(),
-                    getGeofencePendingIntent()
-            ).setResultCallback(mGeofenceResultCallback);
-        } catch (SecurityException securityexception) {
-            securityexception.printStackTrace();
-        }
+        GeofenceCallbacks geofenceCallbacks = new GeofenceCallbacks();
+        mGeofencePendingIntent = geofenceCallbacks.getGeofencePendingIntent(MapsActivity.this, mGeofencePendingIntent);
     }
+
+//    private void createGeofence() {
+//        //create a geofence for the selected latlng
+//        if (null == mGoogleApiClient || !mGoogleApiClient.isConnected()) {
+//            //todo error dialog
+//            Toast.makeText(this, "google api client is not connected", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
+//
+//        try {
+//            LocationServices.GeofencingApi.addGeofences(
+//                    mGoogleApiClient,
+//                    getGeofencingRequest(),
+//                    getGeofencePendingIntent()
+//            ).setResultCallback(mGeofenceResultCallback);
+//        } catch (SecurityException securityexception) {
+//            securityexception.printStackTrace();
+//        }
+//    }
 
 
     private void handlePlaceTypeOptionResult(int status, int selection) {
@@ -636,13 +661,6 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.Co
                         getProfileDetails();
                         break;
 
-                    case 1:
-                        //place
-                        //TODO save the places
-                        saveLocations();
-                        Toast.makeText(this, "save to be implemented", Toast.LENGTH_SHORT).show();
-                        break;
-
                     default:
                         Log.d(TAG, "invalid selection received");
                 }
@@ -654,8 +672,6 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.Co
         }
     }
 
-    private void saveLocations() {
-    }
 
     private void prepareData(Intent data) {
         JSONObject latlng = getLatLngObject();
@@ -687,15 +703,6 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.Co
 
     }
 
-    private void prepareAreaData(Intent data) {
-        JSONObject latlng = createPolygon();
-        String locationName = data.getStringExtra("LOCATION_NAME");
-        int profileType = data.getIntExtra("PROFILE", Constants.PROFILE_NORMAL);
-        int locationType = Constants.LOCATION_AREA;
-
-//        writeToTable(latlng, locationType, locationName, profileType);
-    }
-
     private void getProfileDetails() {
         Intent intent = new Intent(MapsActivity.this, LocationDetailsGetter.class);
         startActivityForResult(intent, PROFILE_TYPE_OPTION_DIALOG);
@@ -703,65 +710,8 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.Co
 
     private void clearMarkers() {
         mSelectedMarker.remove();
-//        int count = mMarkerArrayList.size();
-//
-//        for (int i = 0; i < count; i++) {
-//            Toast.makeText(this, "Clearing " + mMarkerArrayList.get(i), Toast.LENGTH_SHORT).show();
-//            mMarkerArrayList.get(i).remove();
-//        }
-//        mMarkerArrayList.clear();
-//        mArrayLatLngs.clear();
-
     }
 
-    private JSONObject createPolygon() {
-        mPolygonOptions = new PolygonOptions();
-
-        int size = mArrayLatLngs.size();
-
-        for (int i = 0; i < size; i++) {
-            mPolygonOptions.add(mArrayLatLngs.get(i));
-        }
-        mPolygonOptions.strokeColor(Color.RED);
-        mPolygonOptions.fillColor(Color.YELLOW);
-        mPolygonOptions.addAll(mArrayLatLngs);
-        mPolygon = mMap.addPolygon(mPolygonOptions);
-
-        //TODO save the polygon
-        return savePolygon();
-
-    }
-
-    private JSONObject savePolygon() {
-        JSONArray latlngsJsonArray;
-        JSONObject latlngObject;
-        LatLng latLng;
-
-        latlngsJsonArray = new JSONArray();
-        int size = mArrayLatLngs.size();
-
-        for (int i = 0; i < size; i++) {
-            latlngObject = new JSONObject();
-            latLng = mArrayLatLngs.get(i);
-            try {
-                latlngObject.put("lat", latLng.latitude);
-                latlngObject.put("lng", latLng.longitude);
-                latlngsJsonArray.put(latlngObject);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-
-        JSONObject completeObject = new JSONObject();
-        try {
-            completeObject.put("latlngs", latlngsJsonArray);
-            Log.d(TAG, " Array of latlngs : " + completeObject);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        return completeObject;
-    }
 
     private void writeToTable(JSONObject latlng, String locationName, int profileType) {
         ContentValues values = new ContentValues();
@@ -778,71 +728,4 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.Co
         mArrayLatLngs.clear();
     }
 
-    private void showDialog(String title, String description, String query) {
-        View dialogView = this.getLayoutInflater().inflate(R.layout.confirmation_pop_up, null);
-
-
-        mDialog.setView(dialogView);
-
-        TextView titleTV = (TextView) dialogView.findViewById(R.id.ca_title);
-        TextView contentTV = (TextView) dialogView.findViewById(R.id.ca_description);
-        TextView queryTV = (TextView) dialogView.findViewById(R.id.ca_assert);
-        Button ok = (Button) dialogView.findViewById(R.id.ca_ok);
-        Button cancel = (Button) dialogView.findViewById(R.id.ca_cancel);
-
-
-        ok.setOnClickListener(this);
-        cancel.setOnClickListener(this);
-
-        mDialog.setView(dialogView);
-
-        titleTV.setText(title);
-
-        if (null != mSelectedAddress) {
-            description += mSelectedAddress;
-        } else {
-            mSelectedAddress = mSelectedLatLng.toString();
-            description += mSelectedLatLng;
-        }
-        contentTV.setText(description);
-        queryTV.setText(query);
-        mDialog.show();
-
-
-    }
-
-
-    private PendingIntent getGeofencePendingIntent() {
-        if (null != mGeofencePendingIntent) {
-            return mGeofencePendingIntent;
-        }
-        Intent intent = new Intent(MapsActivity.this, GeofenceTransitionIntentService.class);
-        mGeofencePendingIntent = PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        return  mGeofencePendingIntent;
-    }
-
-    private Geofence getGeofenceToAdd() {
-        Geofence geofence = new Geofence.Builder().setRequestId(mSelectedLatLng.toString())
-                .setCircularRegion(mSelectedLatLng.latitude, mSelectedLatLng.longitude, Constants.GEOFENCE_RADIUS)
-                .setExpirationDuration(Geofence.NEVER_EXPIRE)
-                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT)
-//                .setLoiteringDelay(Constants.GEOFENCE_LOITERING_DELAY)
-                .build();
-
-        Circle circle = mMap.addCircle(new CircleOptions()
-                .center(mSelectedLatLng)
-                .radius(Constants.GEOFENCE_RADIUS)
-                .strokeColor(getResources().getColor(R.color.circle_ouline_blue))
-                .fillColor(getResources().getColor(R.color.circle_stroke_blue)));
-
-
-        return geofence;
-    }
-
-    private GeofencingRequest getGeofencingRequest() {
-        return new GeofencingRequest.Builder()
-                .setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER)
-                .addGeofence(getGeofenceToAdd())
-                .build();
-    }
 }

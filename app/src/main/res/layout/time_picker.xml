@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/white"
+    android:background="@drawable/popup_background"
     android:orientation="vertical"
     android:padding="@dimen/activity_vertical_margin">
 
@@ -18,7 +18,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="8dp"
-            android:text="@string/from"
+            android:textColor="@color/black"
+            android:text="@string/tp_header"
             android:textSize="20sp" />
 
         <TextView
@@ -33,7 +34,8 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/circle_ouline_blue" />
+        android:background="@color/circle_ouline_blue"
+        />
 
     <LinearLayout
         android:id="@+id/tp_time_picker"
@@ -68,6 +70,7 @@
                 android:maxLength="2"
                 android:ems="3"
                 android:background="@drawable/custom_edittextbox"
+                android:textCursorDrawable="@drawable/blue_cursor"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 android:inputType="number"/>
@@ -105,6 +108,7 @@
                 android:gravity="center"
                 android:text="@string/minute"
                 android:maxLength="2"
+                android:textCursorDrawable="@drawable/blue_cursor"
                 android:ems="3"
                 android:background="@drawable/custom_edittextbox"
                 android:textColor="@color/black"
@@ -135,7 +139,7 @@
             android:layout_alignParentRight="true"
             android:background="@null"
             android:text="@string/save"
-            android:textColor="@color/blue2"
+            android:textColor="@color/circle_ouline_blue"
             android:textSize="20sp" />
 
         <Button
@@ -146,7 +150,7 @@
             android:layout_toLeftOf="@+id/tp_save"
             android:background="@null"
             android:text="@string/cancel"
-            android:textColor="@color/blue2"
+            android:textColor="@color/circle_ouline_blue"
             android:textSize="20sp" />
 
     </RelativeLayout>

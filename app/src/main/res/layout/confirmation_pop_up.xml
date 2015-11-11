@@ -8,7 +8,7 @@
     android:paddingLeft="24dp"
     android:paddingRight="24dp"
     android:paddingBottom="8dp"
-    android:background="@color/white">
+    android:background="@drawable/popup_background">
 
     <TextView
         android:layout_width="match_parent"
@@ -16,7 +16,7 @@
         android:id="@+id/ca_title"
         android:textSize="20sp"
         android:layout_marginBottom="8dp"
-        android:textColor="@android:color/holo_blue_dark"
+        android:textColor="@color/circle_ouline_blue"
         android:background="@null"
         android:text="confirmation text"/>
 
@@ -61,7 +61,7 @@
             android:layout_alignParentRight="true"
             android:background="@null"
             android:text="@string/ok"
-            android:textColor="@color/blue2"
+            android:textColor="@color/circle_ouline_blue"
             android:textSize="20sp" />
 
         <Button
@@ -72,7 +72,7 @@
             android:layout_toLeftOf="@+id/ca_ok"
             android:background="@null"
             android:text="@string/cancel"
-            android:textColor="@color/blue2"
+            android:textColor="@color/circle_ouline_blue"
             android:textSize="20sp" />
     </RelativeLayout>
 </LinearLayout>

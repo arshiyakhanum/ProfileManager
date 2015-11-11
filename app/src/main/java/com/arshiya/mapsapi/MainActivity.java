@@ -1,6 +1,7 @@
 package com.arshiya.mapsapi;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
@@ -15,6 +16,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -23,9 +25,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.arshiya.mapsapi.common.Constants;
+import com.arshiya.mapsapi.common.Fonts;
+import com.arshiya.mapsapi.errordisplay.AlertDialogClass;
 import com.arshiya.mapsapi.geocodermanager.GeoCoderFetchAddress;
 import com.arshiya.mapsapi.geofence.ui.RemoveGeofences;
 import com.arshiya.mapsapi.settings.Settings;
+import com.arshiya.mapsapi.storage.ConfirmationDialog;
 import com.arshiya.mapsapi.storage.sharedpreference.ProfileManagerSharedPref;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -40,7 +45,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.ArrayList;
 
 
-public class MainActivity extends Activity implements View.OnClickListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, AdapterView.OnItemClickListener {
+public class MainActivity extends Activity implements View.OnClickListener, GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener, AdapterView.OnItemClickListener, ConfirmationDialog.OnClickCallback {
 
     private static final String TAG = MainActivity.class.getSimpleName();
     public static DrawerLayout mDrawerLayout;
@@ -55,6 +61,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Goog
     private ImageButton mNavigationButton;
     private TextView mCurrentLocation;
     private Location mLocation;
+    private AlertDialog mDialog;
     private ProfileManagerSharedPref mProfileManagerSharedPref;
 
 
@@ -63,9 +70,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Goog
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
 
-        initLocationObserverService();
         initView();
-        mProfileManagerSharedPref = ProfileManagerSharedPref.gcSharedPreferenceInstance(this);
         checkPlayServices();
         checkNetworkAvailability();
         checkGPSStatus();
@@ -77,9 +82,6 @@ public class MainActivity extends Activity implements View.OnClickListener, Goog
 
     }
 
-    private void initLocationObserverService() {
-    }
-
     private void buildGoogleApiClient() {
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
@@ -89,25 +91,32 @@ public class MainActivity extends Activity implements View.OnClickListener, Goog
     }
 
     private void initView() {
+        mProfileManagerSharedPref = ProfileManagerSharedPref.gcSharedPreferenceInstance(this);
         mCurrentLocation = (TextView) findViewById(R.id.home_current_location);
+        mCurrentLocation.setTypeface(Fonts.ROBOTOREGULAR);
+
+        TextView title = (TextView) findViewById(R.id.app_name);
+        title.setTypeface(Fonts.ROBOTOMEDIUM);
+
+        TextView youAreAt = (TextView) findViewById(R.id.location_header);
+        youAreAt.setTypeface(Fonts.ROBOTOMEDIUM);
 
         mNavigationButton = (ImageButton) findViewById(R.id.navigator_button);
         mNavigationButton.setOnClickListener(this);
 
         mAddLocation = (Button) findViewById(R.id.home_add_location);
         mAddLocation.setOnClickListener(this);
+        mAddLocation.setTypeface(Fonts.ROBOTOMEDIUM);
 
         mRemoveLocation = (Button) findViewById(R.id.home_remove_location);
         mRemoveLocation.setOnClickListener(this);
+        mRemoveLocation.setTypeface(Fonts.ROBOTOMEDIUM);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.slider_list);
 
         mSliderListItems = new ArrayList<SliderListItem>();
         String[] itemNameList = getResources().getStringArray(R.array.drawer_items);
-//        int[] itemIconList = getResources().getIntArray(R.array.drawer_list_item_icons);
-
-//        int size = itemIconList.length;
 
         mSliderListItems.add(new SliderListItem(itemNameList[0], R.drawable.home));
         mSliderListItems.add(new SliderListItem(itemNameList[1], R.drawable.settings));
@@ -166,7 +175,6 @@ public class MainActivity extends Activity implements View.OnClickListener, Goog
 
             latLng = new LatLng(location.getLatitude(), location.getLongitude());
         } else {
-            Toast.makeText(this, "Could not fetch your location", Toast.LENGTH_SHORT).show();
             latLng = new LatLng(0, 0);
         }
         mMap.addMarker(new MarkerOptions().position(latLng).title("You"));
@@ -199,15 +207,13 @@ public class MainActivity extends Activity implements View.OnClickListener, Goog
     }
 
 
-
     private void checkGPSStatus() {
         mLocationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         boolean gpsEnabled = mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 
         if (!gpsEnabled) {
-            Toast.makeText(this, "Please turn on GPS", Toast.LENGTH_SHORT).show();
-            Intent gpsIntent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-            startActivity(gpsIntent);
+            mDialog = ConfirmationDialog.getDialog(MainActivity.this, "Turn on GPS", "Please turn on GPS to get your location.", "");
+            mDialog.show();
         } else {
             Log.d(TAG, "GPS is enabled");
         }
@@ -223,8 +229,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Goog
 
         if (!is_connected) {
             Log.d(TAG, " : connected to network : " + is_connected);
-            Toast.makeText(this, " please check your internet connection ", Toast.LENGTH_SHORT).show();
-            //TODO show error alert
+            AlertDialogClass.showAlert(this, "please check your internet connection ");
         } else
 
         {
@@ -272,6 +277,25 @@ public class MainActivity extends Activity implements View.OnClickListener, Goog
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
 
+    }
+
+    @Override
+    public void onClickCD(int state) {
+        switch (state) {
+            case Constants.ACTION_OK:
+                if (null != mDialog && mDialog.isShowing()) {
+                    Intent gpsIntent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    startActivity(gpsIntent);
+                    mDialog.dismiss();
+                }
+                break;
+
+            case Constants.ACTON_CANCEL:
+                if (null != mDialog && mDialog.isShowing()) {
+                    mDialog.dismiss();
+                }
+                break;
+        }
     }
 
     private class ResultHandler extends Handler {

@@ -11,8 +11,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.TextView;
 
 import com.arshiya.mapsapi.common.Constants;
+import com.arshiya.mapsapi.common.Fonts;
 
 public class LocationDetailsGetter extends Activity implements View.OnClickListener {
 
@@ -32,7 +34,7 @@ public class LocationDetailsGetter extends Activity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_location_details_getter);
 
-        mCurrentSelection = -1;
+        mCurrentSelection = Constants.PROFILE_SILENT;
         mSilent = (RadioButton) findViewById(R.id.rb_silent);
         mNormal = (RadioButton) findViewById(R.id.rb_normal);
         mVibrate = (RadioButton) findViewById(R.id.rb_vibrate);
@@ -40,6 +42,17 @@ public class LocationDetailsGetter extends Activity implements View.OnClickListe
 
         mOk = (Button) findViewById(R.id.profile_type_option_dialog_ok);
         mCancel = (Button) findViewById(R.id.profile_type_option_dialog_cancel);
+
+        TextView profileTypeHeader = (TextView) findViewById(R.id.profile_type_header);
+
+        mLocationName.setTypeface(Fonts.ROBOTOREGULAR);
+        mSilent.setTypeface(Fonts.ROBOTOREGULAR);
+        mNormal.setTypeface(Fonts.ROBOTOREGULAR);
+        mVibrate.setTypeface(Fonts.ROBOTOREGULAR);
+        profileTypeHeader.setTypeface(Fonts.ROBOTOMEDIUM);
+        mOk.setTypeface(Fonts.ROBOTOMEDIUM);
+        mCancel.setTypeface(Fonts.ROBOTOMEDIUM);
+
 
         mSilent.setChecked(true);
         mSilent.setOnClickListener(this);

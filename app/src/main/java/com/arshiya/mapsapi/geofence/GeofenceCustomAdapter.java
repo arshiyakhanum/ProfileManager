@@ -12,6 +12,7 @@ import android.widget.CursorAdapter;
 import android.widget.TextView;
 
 import com.arshiya.mapsapi.R;
+import com.arshiya.mapsapi.common.Fonts;
 import com.arshiya.mapsapi.storage.contentprovider.LocationsContentProvider;
 import com.arshiya.mapsapi.storage.contentprovider.LocationsDatabase;
 
@@ -40,6 +41,14 @@ public class GeofenceCustomAdapter extends CursorAdapter {
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View retView = inflater.inflate(R.layout.geofence_list_item, parent, false);
+        TextView locationName = (TextView) retView.findViewById(R.id.location_name);
+        TextView address = (TextView) retView.findViewById(R.id.geofences_address);
+        Button remove = (Button) retView.findViewById(R.id.remove_geofence_list_item);
+
+        locationName.setTypeface(Fonts.ROBOTOMEDIUM);
+        address.setTypeface(Fonts.ROBOTOREGULAR);
+        remove.setTypeface(Fonts.ROBOTOMEDIUM);
+
         return retView;
     }
 

@@ -22,6 +22,10 @@ public class Constants {
     public static final int ACTION_FETCH_ADDRESS = 11;
     public static final int ACTION_AUTOCOMPLETE = 12;
     public static final int ACTION_AUTOCOMPLETE_RESULT = 13;
+    public static final int ACTION_OK = 14;
+    public static final int ACTON_CANCEL = 15;
+
+
 
     public static final int LOADER_ID = 20;
 

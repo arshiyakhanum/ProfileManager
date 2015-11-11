@@ -54,10 +54,12 @@
         <activity
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps"
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Holo.NoActionBar"/>
         <activity
             android:name=".PlaceTypeOptionDialog"
             android:label="@string/title_activity_place_type_option_dialog"
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Holo.Dialog.NoActionBar" >
         </activity>
 
@@ -69,6 +71,7 @@
         <activity
             android:name=".LocationDetailsGetter"
             android:label="@string/title_activity_location_details_getter"
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Holo.Dialog.NoActionBar" >
         </activity>
         <activity
@@ -97,6 +100,7 @@
             android:name=".geofence.ui.RemoveGeofences"
             android:label="@string/title_activity_geofence"
             android:launchMode="singleTask"
+            android:screenOrientation="portrait"
             android:parentActivityName=".MainActivity" >
         </activity>
 
@@ -107,10 +111,12 @@
             android:name=".settings.Settings"
             android:label="@string/title_activity_settings"
             android:launchMode="singleTask"
+            android:screenOrientation="portrait"
             android:parentActivityName=".MainActivity" >
         </activity>
         <activity
             android:name=".settings.TimeSetActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_time_set"
             android:theme="@android:style/Theme.Holo.Dialog.NoActionBar">
         </activity>

@@ -8,6 +8,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.arshiya.mapsapi.common.Fonts;
+
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
@@ -51,6 +53,7 @@ public class CustomSliderListAdapter extends BaseAdapter{
         ImageView icon = (ImageView) convertView.findViewById(R.id.slider_item_icon);
         TextView title = (TextView) convertView.findViewById(R.id.slider_item_name);
 
+        title.setTypeface(Fonts.ROBOTOMEDIUM);
         icon.setImageResource(sliderListItem.mIcon);
         title.setText(sliderListItem.mTitle);
 
