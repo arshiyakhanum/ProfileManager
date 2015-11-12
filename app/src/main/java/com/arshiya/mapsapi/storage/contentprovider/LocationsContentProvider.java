@@ -88,6 +88,9 @@ public class LocationsContentProvider extends ContentProvider {
         return mLocationsDB.del(uri, selection, selectionArgs);
     }
 
+    public int getSize(){
+        return  mLocationsDB.getSize();
+    }
     /**
      * A callback method which is invoked by default content uri
      */

@@ -127,4 +127,11 @@ public class LocationsDatabase extends SQLiteOpenHelper {
 
         return mDB.query(LOCATION_TABLE_NAME, new String[]{PROFILE_TYPE}, selection, new String[]{geotag}, null, null, null);
     }
+
+    public int getSize() {
+        Cursor cursor = mDB.query(LOCATION_TABLE_NAME, new String[]{_ID, ADDRESS, LOCATION_NAME, GEOFENCE_TAG, LATLNGS, LOCATION_TYPE, PROFILE_TYPE},
+                null, null, null, null, null);
+
+        return cursor.getCount();
+    }
 }

@@ -6,7 +6,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Messenger;
 import android.util.Log;
+
+import com.arshiya.mapsapi.common.Constants;
 
 /**
  * Created by akhanumx on 10/28/2015.
@@ -15,12 +18,14 @@ public class InsertTaskManager {
     private static final String TAG = InsertTaskManager.class.getSimpleName();
     private static Context mContext;
     private static InsertTaskManager mInsertTaskManager = new InsertTaskManager();
+    private static Messenger mMessenger;
 
     private InsertTaskManager() {
     }
 
-    public static InsertTaskManager getInsertTaskManagerInstance(Context context) {
+    public static InsertTaskManager getInsertTaskManagerInstance(Context context, Messenger messenger) {
         mContext = context;
+        mMessenger = messenger;
         return mInsertTaskManager;
     }
 
@@ -28,24 +33,36 @@ public class InsertTaskManager {
         new InsertTask().execute(contentValues);
     }
 
-    private class InsertTask extends AsyncTask<ContentValues, Void, Void> {
+    private class InsertTask extends AsyncTask<ContentValues, Void, Integer> {
 
         @Override
-        protected Void doInBackground(ContentValues... params) {
+        protected Integer doInBackground(ContentValues... params) {
             Log.d(TAG, " do in background");
+
+            LocationsContentProvider provider = new LocationsContentProvider();
+            int size = provider.getSize();
+
+            if (size == Constants.MAX_GEOFENCE_SIZE){
+                //max geofence  limit is reached cannot add any more geofences
+                return -1;
+            }
 
             ContentResolver cr = mContext.getContentResolver();
             Uri uri = cr.insert(LocationsContentProvider.CONTENT_URI, params[0]);
             if (null == uri) {
                 Log.e(TAG, " writing to table failed");
+                return 0;
             } else {
                 Log.d(TAG, " write to table done, uri : " + uri);
             }
-            return null;
+            return 1;
         }
 
         @Override
-        protected void onPostExecute(Void aVoid) {
+        protected void onPostExecute(Integer status) {
+
+
+            //todo delete - start
             //read
             Cursor cursor = mContext.getContentResolver().query(LocationsContentProvider.CONTENT_URI, new String[]{
                     LocationsDatabase.LATLNGS, LocationsDatabase.PROFILE_TYPE, LocationsDatabase.LOCATION_TYPE,
@@ -85,6 +102,7 @@ public class InsertTaskManager {
 
                 }
             }
+            //todo delete - end
         }
     }
 }

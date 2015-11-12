@@ -127,7 +127,7 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.Co
         geofenceResultCallback();
         mSearchProgress = (ProgressBar) findViewById(R.id.maps_progressBar);
 
-        mInsertTaskManager = InsertTaskManager.getInsertTaskManagerInstance(this);
+        mInsertTaskManager = InsertTaskManager.getInsertTaskManagerInstance(this, new Messenger(new ResultHandler()));
         mFind = (Button) findViewById(R.id.btn_find);
         mUserInput = (AutoCompleteTextView) findViewById(R.id.et_location);
         mUserInput.setTypeface(Fonts.ROBOTOREGULAR);
