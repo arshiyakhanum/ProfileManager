@@ -28,6 +28,7 @@ public class Constants {
 
 
     public static final int LOADER_ID = 20;
+    public static final int MAX_GEOFENCE_SIZE = 100;
 
     public static final int FETCH_FAILED = 30;
     public static final int FETCH_SUCCESS = 31;
