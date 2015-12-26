@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.arshiya.mapsapi.MapsActivity">
+    tools:context="com.arshiya.mapsapi.mapactivities.MapsActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -33,7 +33,7 @@
             android:indeterminateDrawable="@drawable/progressbar_circle"
             />
 
-        <com.arshiya.mapsapi.CustomAutoCompleteTextView
+        <com.arshiya.mapsapi.mapactivities.CustomAutoCompleteTextView
             android:id="@+id/et_location"
             android:layout_width="fill_parent"
             android:layout_marginTop="12dp"

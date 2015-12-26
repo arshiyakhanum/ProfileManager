@@ -5,9 +5,9 @@ package com.arshiya.mapsapi.common;
  */
 public class Constants {
 
-    public static final int PROFILE_NORMAL = 0;
+    public static final int PROFILE_NORMAL = 2;
     public static final int PROFILE_VIBRATE = 1;
-    public static final int PROFILE_SILENT = 2;
+    public static final int PROFILE_SILENT = 0;
 
     public static final int LOCATION_AREA = 0;
     public static final int LOCATION_SINGLE = 1;
@@ -32,6 +32,10 @@ public class Constants {
 
     public static final int FETCH_FAILED = 30;
     public static final int FETCH_SUCCESS = 31;
+    public static final int MAX_SIZE_ERROR = 32;
+    public static final int INSERT_ERROR = 33;
+    public static final int INSERT_SUCCESS = 34;
+
 
     /**
      * time picker constants

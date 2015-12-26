@@ -2,6 +2,7 @@ package com.arshiya.mapsapi.geofence;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.media.AudioManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,8 +14,10 @@ import android.widget.TextView;
 
 import com.arshiya.mapsapi.R;
 import com.arshiya.mapsapi.common.Fonts;
+import com.arshiya.mapsapi.profilemanager.UpdateProfile;
 import com.arshiya.mapsapi.storage.contentprovider.LocationsContentProvider;
 import com.arshiya.mapsapi.storage.contentprovider.LocationsDatabase;
+import com.arshiya.mapsapi.storage.sharedpreference.ProfileManagerSharedPref;
 
 import org.w3c.dom.Text;
 
@@ -26,12 +29,14 @@ public class GeofenceCustomAdapter extends CursorAdapter {
     private static final String TAG = GeofenceCustomAdapter.class.getSimpleName();
     private AdapterCallback mAdapterCallback;
     private Context mContext;
+    private ProfileManagerSharedPref mManagerSharedPref;
 
     public GeofenceCustomAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
         try {
             this.mAdapterCallback = ((AdapterCallback) context);
             mContext = context;
+            mManagerSharedPref = ProfileManagerSharedPref.gcSharedPreferenceInstance(mContext);
         } catch (ClassCastException e) {
             throw new ClassCastException("Activity must implement AdapterCallback.");
         }
@@ -76,25 +81,30 @@ public class GeofenceCustomAdapter extends CursorAdapter {
 
                 Log.d(TAG, "in bind, count : " + size);
 
-                if (cursor1.moveToFirst()){
+                if (0 != size){
+                    cursor1.moveToFirst();
                     Log.d(TAG, "cursor is not empty");
                     tag = cursor1.getString(0);//cursor1.getColumnIndex(LocationsDatabase.GEOFENCE_TAG));
                     Log.d(TAG, "Geofence tag : " + tag);
+                    //check if it is current geofence id
+                    if (tag.equals(mManagerSharedPref.getCurrentGeofenceId())){
+                        //set the profile saved Profile
+                        Log.d(TAG, "Set saved profile and delete");
+                        new UpdateProfile(mManagerSharedPref.getSavedRingerMode(),
+                                (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE));
+                        mManagerSharedPref.saveCurrentGeofenceId(null);
+                    }
                 }else {
                     Log.e(TAG, "nothing returned");
                 }
 
 
-
-
-//                String selection = LocationsDatabase.GEOFENCE_TAG + " = ?";
-//                int row = mContext.getContentResolver().delete(LocationsContentProvider.CONTENT_URI, selection,
-//                        new String[]{address.getText().toString()});
-
                 int row = db.delete(tag);
                 Log.d(TAG, "deleted : " + row);
+                notifyDataSetChanged();
 
                 mAdapterCallback.onDeleteComplete(tag);
+                cursor1.close();
                 db.close();
 
             }

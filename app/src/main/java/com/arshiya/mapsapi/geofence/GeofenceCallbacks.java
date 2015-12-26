@@ -3,6 +3,7 @@ package com.arshiya.mapsapi.geofence;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.arshiya.mapsapi.R;
@@ -21,13 +22,14 @@ import com.google.android.gms.maps.model.LatLng;
  */
 public class GeofenceCallbacks {
 
+    private static final String TAG = GeofenceCallbacks.class.getSimpleName();
 
     public void createGeofence(GoogleApiClient googleApiClient, PendingIntent geofencePendingIntent,
                                LatLng latLng, ResultCallback resultCallback) {
         //create a geofence for the selected latlng
         if (null == googleApiClient || !googleApiClient.isConnected()) {
             //todo error dialog
-//            Toast.makeText(this, "google api client is not connected", Toast.LENGTH_SHORT).show();
+            Log.e(TAG, "error in google api client");
             return;
         }
 

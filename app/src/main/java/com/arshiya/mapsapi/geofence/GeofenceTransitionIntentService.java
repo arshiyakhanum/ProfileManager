@@ -10,14 +10,14 @@ import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.media.AudioManager;
-import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.arshiya.mapsapi.MapsActivity;
+import com.arshiya.mapsapi.mapactivities.MapsActivity;
 import com.arshiya.mapsapi.R;
 import com.arshiya.mapsapi.common.Constants;
+import com.arshiya.mapsapi.profilemanager.UpdateProfile;
 import com.arshiya.mapsapi.storage.contentprovider.LocationsDatabase;
 import com.arshiya.mapsapi.storage.sharedpreference.ProfileManagerSharedPref;
 import com.google.android.gms.location.Geofence;
@@ -34,9 +34,10 @@ public class GeofenceTransitionIntentService extends IntentService {
     private static final String TAG = GeofenceTransitionIntentService.class.getSimpleName();
     private ProfileManagerSharedPref mProfileManagerSharedPref;
 
-    public GeofenceTransitionIntentService(){
+    public GeofenceTransitionIntentService() {
         super(null);
     }
+
     /**
      * Creates an IntentService.  Invoked by your subclass's constructor.
      *
@@ -73,9 +74,6 @@ public class GeofenceTransitionIntentService extends IntentService {
                     geofenceTransition,
                     triggeringGeofences
             );
-
-            // Send notification and log the transition details.
-            sendNotification(geofenceTransitionDetails);
             Log.i(TAG, geofenceTransitionDetails);
         } else {
             // Log the error.
@@ -103,57 +101,11 @@ public class GeofenceTransitionIntentService extends IntentService {
         ArrayList triggeringGeofencesIdsList = new ArrayList();
         for (Geofence geofence : triggeringGeofences) {
             triggeringGeofencesIdsList.add(geofence.getRequestId());
-             pt = ""+checkIfInSelectedLocation(geofence.getRequestId(), geofenceTransition);
+            pt = "" + checkIfInSelectedLocation(geofence.getRequestId(), geofenceTransition);
         }
         String triggeringGeofencesIdsString = TextUtils.join(", ", triggeringGeofencesIdsList);
 
         return "Profile Type " + pt + "...  " + geofenceTransitionString + ": " + triggeringGeofencesIdsString;
-    }
-
-    /**
-     * Posts a notification in the notification bar when a transition is detected.
-     * If the user clicks the notification, control goes to the MainActivity.
-     */
-    private void sendNotification(String notificationDetails) {
-        // Create an explicit content Intent that starts the main Activity.
-        Intent notificationIntent = new Intent(getApplicationContext(), MapsActivity.class);
-
-        // Construct a task stack.
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-
-        // Add the main Activity to the task stack as the parent.
-        stackBuilder.addParentStack(MapsActivity.class);
-
-        // Push the content Intent onto the stack.
-        stackBuilder.addNextIntent(notificationIntent);
-
-        // Get a PendingIntent containing the entire back stack.
-        PendingIntent notificationPendingIntent =
-                stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        // Get a notification builder that's compatible with platform versions >= 4
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
-
-        // Define the notification settings.
-        builder.setSmallIcon(R.drawable.ic_action)
-                // In a real app, you may want to use a library like Volley
-                // to decode the Bitmap.
-                .setLargeIcon(BitmapFactory.decodeResource(getResources(),
-                        R.drawable.ic_action))
-                .setColor(Color.RED)
-                .setContentTitle(notificationDetails)
-                .setContentText(notificationDetails + "\n" + getString(R.string.geofence_transition_notification_text));
-//                .setContentIntent(notificationPendingIntent);
-
-        // Dismiss notification once the user touches it.
-        builder.setAutoCancel(true);
-
-        // Get an instance of the Notification manager
-        NotificationManager mNotificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-        // Issue the notification
-        mNotificationManager.notify(0, builder.build());
     }
 
     /**
@@ -170,21 +122,23 @@ public class GeofenceTransitionIntentService extends IntentService {
 
 
             case Geofence.GEOFENCE_TRANSITION_EXIT:
-                Log.d(TAG,  "exited");
+                Log.d(TAG, "exited");
                 return getString(R.string.geofence_transition_exited);
 
             case Geofence.GEOFENCE_TRANSITION_DWELL:
                 Log.d(TAG, "dwelling");
                 return ("In the area");
             default:
-                Log.e(TAG,  "unknown transition");
+                Log.e(TAG, "unknown transition");
                 return getString(R.string.unknown_geofence_transition);
         }
     }
 
 
     private String checkIfInSelectedLocation(String geofenceid, int geofenceTransition) {
-        switch (geofenceTransition){
+        AudioManager audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
+
+        switch (geofenceTransition) {
 
             case Geofence.GEOFENCE_TRANSITION_ENTER:
                 LocationsDatabase db = new LocationsDatabase(this);
@@ -193,39 +147,47 @@ public class GeofenceTransitionIntentService extends IntentService {
                 int count = cursor.getCount();
                 Log.d(TAG, "count : " + count);
 
-                if (count == 0){
+                if (count == 0) {
+                    //do nothing
                     Log.e(TAG, "geofence tag : " + geofenceid + " is not stored ");
-                    changeProfile(Constants.PROFILE_NORMAL);
-                    db.close();
-                    return Constants.PROFILE_NORMAL + " default";
-                }else {
-                    if (count > 1){
+
+                } else {
+                    //save the current profile
+                    int currentProfile = audioManager.getRingerMode();
+                    Log.d(TAG, "current profile " + currentProfile);
+                    mProfileManagerSharedPref.saveRingerMode(currentProfile);
+
+                    //save the geofence id
+                    mProfileManagerSharedPref.saveCurrentGeofenceId(geofenceid);
+
+                    if (count > 1) {
                         cursor.moveToFirst();
                         Log.e(TAG, "duplicate geofence tags, setting first geotag's profile ");
                         int profile = cursor.getInt(0);
                         Log.d(TAG, " ProfileType : " + profile);
-                        changeProfile(profile);
+                        new UpdateProfile(profile, audioManager);
                         db.close();
+                        cursor.close();
                         return (profile + " saved");
-                    }else {
+                    } else {
                         cursor.moveToFirst();
                         Log.e(TAG, "found one geotag");
                         int profile = cursor.getInt(0);
                         Log.d(TAG, "Profile : " + profile);
                         Log.d(TAG, " ProfileType : " + profile);
-                        changeProfile(profile);
+                        new UpdateProfile(profile, audioManager);
                         db.close();
+                        cursor.close();
                         return (profile + " saved");
 
                     }
                 }
 
-
             case Geofence.GEOFENCE_TRANSITION_EXIT:
-                //todo save last user's profile settings
-                changeProfile(Constants.PROFILE_NORMAL);
-                return  "exited , default profile";
-
+                //change current geofence id to null
+                mProfileManagerSharedPref.saveCurrentGeofenceId(null);
+                new UpdateProfile(mProfileManagerSharedPref.getSavedRingerMode(), audioManager);
+                return "exited , " + mProfileManagerSharedPref.getSavedRingerMode() + " profile";
 
 
         }
@@ -233,44 +195,5 @@ public class GeofenceTransitionIntentService extends IntentService {
         return "";
     }
 
-
-    private void changeProfile(int profile) {
-        switch (profile) {
-            case Constants.PROFILE_NORMAL:
-                setNormalVolumeSettings();
-                break;
-
-            case Constants.PROFILE_SILENT:
-                setSilentVolumesettings();
-                break;
-
-            case Constants.PROFILE_VIBRATE:
-                setVibrateVolumesettings();
-                break;
-
-
-        }
-    }
-
-    private void setNormalVolumeSettings() {
-        AudioManager audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
-        mProfileManagerSharedPref = ProfileManagerSharedPref.gcSharedPreferenceInstance(this);
-        Bundle settings = mProfileManagerSharedPref.getNormalSettings();
-
-        int volume = settings.getInt("normal_volume_level", Constants.NORMAL_VOLUME_LEVEL);
-
-        audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
-    }
-
-    private void setSilentVolumesettings() {
-        AudioManager audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
-        audioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
-    }
-
-    private void setVibrateVolumesettings() {
-        AudioManager audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
-
-        audioManager.setRingerMode(AudioManager.RINGER_MODE_VIBRATE);
-    }
 
 }

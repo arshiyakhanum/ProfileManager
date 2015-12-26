@@ -80,7 +80,7 @@ public class GeoCoderFetchAddress {
             int status = Constants.FETCH_SUCCESS;
 
             if (address.equalsIgnoreCase("")) {
-                address = "Address unknown : \n latitude : " + mLatLng.latitude + "\nlongitude : " + mLatLng.longitude + "\n";
+                address = "Address unknown : \nlatitude : " + mLatLng.latitude + "\nlongitude : " + mLatLng.longitude + "\n";
                 status = Constants.FETCH_FAILED;
             }
             message.obj = address;
