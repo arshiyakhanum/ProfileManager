@@ -2,6 +2,7 @@ package com.arshiya.mapsapi.storage.sharedpreference;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.media.AudioManager;
 import android.os.Bundle;
 
 import com.arshiya.mapsapi.common.Constants;
@@ -26,7 +27,7 @@ public class ProfileManagerSharedPref {
     public static ProfileManagerSharedPref gcSharedPreferenceInstance(Context context) {
         ProfileManagerSharedPref.mContext = context;
         /* get the shared preference object */
-        mPreferences = mContext.getSharedPreferences("greekcanyon_CloudApp", Context.MODE_PRIVATE);
+        mPreferences = mContext.getSharedPreferences("smart_profile", Context.MODE_PRIVATE);
         /*get the mEditor */
         mEditor = mPreferences.edit();
         return PROFILE_MANAGER_SHARED_PREF;
@@ -160,5 +161,23 @@ public class ProfileManagerSharedPref {
     public void setAlarm(Boolean status) {
         mEditor.putBoolean("night_alarm", status);
         mEditor.apply();
+    }
+
+    public void saveRingerMode(int currentProfile) {
+        mEditor.putInt("save_ringer_mode", currentProfile);
+        mEditor.apply();
+    }
+
+    public int getSavedRingerMode() {
+        return mPreferences.getInt("save_ringer_mode", AudioManager.MODE_NORMAL);
+    }
+
+    public void saveCurrentGeofenceId(String geofenceid) {
+        mEditor.putString("current_geofence_id", geofenceid);
+        mEditor.apply();
+    }
+
+    public String getCurrentGeofenceId(){
+        return mPreferences.getString("current_geofence_id", null);
     }
 }

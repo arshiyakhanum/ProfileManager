@@ -4,11 +4,14 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.app.LoaderManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.graphics.drawable.ColorDrawable;
+import android.media.AudioManager;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.arshiya.mapsapi.R;
@@ -24,8 +28,10 @@ import com.arshiya.mapsapi.common.Fonts;
 import com.arshiya.mapsapi.geofence.GeofenceCustomAdapter;
 import com.arshiya.mapsapi.geofence.GeofenceErrorMessage;
 import com.arshiya.mapsapi.geofence.GeofenceTransitionIntentService;
+import com.arshiya.mapsapi.profilemanager.UpdateProfile;
 import com.arshiya.mapsapi.storage.contentprovider.LocationsContentProvider;
 import com.arshiya.mapsapi.storage.contentprovider.LocationsDatabase;
+import com.arshiya.mapsapi.storage.sharedpreference.ProfileManagerSharedPref;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
@@ -47,6 +53,8 @@ public class RemoveGeofences extends Activity implements LoaderManager.LoaderCal
     private Cursor mGeofenceCursor;
     private PendingIntent mGeofencePendingIntent;
     private GoogleApiClient mGoogleApiClient;
+    private boolean mLocationListEmpty;
+    private RelativeLayout mEmptyListMessageHolder;
 
 
     @Override
@@ -58,7 +66,26 @@ public class RemoveGeofences extends Activity implements LoaderManager.LoaderCal
 
         buildGoogleApiClient();
         mGeofencesList = (ListView) findViewById(R.id.geofences_list);
+        mEmptyListMessageHolder = (RelativeLayout) findViewById(R.id.empty_list_error_holder);
 
+        updateUI();
+
+    }
+
+    private void updateUI() {
+        LocationsDatabase db = new LocationsDatabase(this);
+        int size = db.getSize();
+        db.close();
+
+        if (0 == size) {
+            mEmptyListMessageHolder.setVisibility(View.VISIBLE);
+            mGeofencesList.setVisibility(View.GONE);
+            mLocationListEmpty = true;
+        } else {
+            mEmptyListMessageHolder.setVisibility(View.GONE);
+            mGeofencesList.setVisibility(View.VISIBLE);
+            mLocationListEmpty = false;
+        }
     }
 
     private void setCustomActionBar() {
@@ -78,11 +105,23 @@ public class RemoveGeofences extends Activity implements LoaderManager.LoaderCal
                     new ColorDrawable(getResources().getColor(android.R.color.transparent)));
         }
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_geofence, menu);
         return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem item = menu.getItem(0);
+        if (mLocationListEmpty) {
+            item.setEnabled(false);
+        } else {
+            item.setEnabled(true);
+        }
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
@@ -105,14 +144,27 @@ public class RemoveGeofences extends Activity implements LoaderManager.LoaderCal
         LocationServices.GeofencingApi.removeGeofences(mGoogleApiClient, getGeofencePendingIntent()).setResultCallback(this);
         getLoaderManager().restartLoader(Constants.LOADER_ID, null, this);
         LocationsDatabase db = new LocationsDatabase(RemoveGeofences.this);
+        ProfileManagerSharedPref profileManagerSharedPref = ProfileManagerSharedPref.gcSharedPreferenceInstance(this);
+
+        if (null != profileManagerSharedPref.getCurrentGeofenceId()) {
+            Log.d(TAG, " in a geofence");
+            Log.d(TAG, "Set saved profile and delete");
+            new UpdateProfile(profileManagerSharedPref.getSavedRingerMode(),
+                    (AudioManager) getSystemService(Context.AUDIO_SERVICE));
+            profileManagerSharedPref.saveCurrentGeofenceId(null);
+
+        }
+
         int rows = db.del();
         Log.d(TAG, "deleted : " + rows + " rows.");
+        updateUI();
         db.close();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        updateUI();
         getLoaderManager().initLoader(Constants.LOADER_ID, null, this);
         if (!mGoogleApiClient.isConnected()) {
             mGoogleApiClient.connect();
@@ -137,39 +189,7 @@ public class RemoveGeofences extends Activity implements LoaderManager.LoaderCal
 
                 if (null == mGeofenceCursor) {
                     Log.e(TAG, " cursor is null");
-                } else {
-                    int count = mGeofenceCursor.getCount();
-                    mGeofenceCursor.moveToFirst();
-
-                    int id;
-                    String latlngcur;
-                    int pt;
-                    int lt;
-                    String name;
-                    String address;
-                    String tag;
-
-                    for (int i = 0; i < count; i++) {
-                        id = mGeofenceCursor.getInt(mGeofenceCursor.getColumnIndex(LocationsDatabase._ID));
-                        pt = mGeofenceCursor.getInt(mGeofenceCursor.getColumnIndex(LocationsDatabase.PROFILE_TYPE));
-                        lt = mGeofenceCursor.getInt(mGeofenceCursor.getColumnIndex(LocationsDatabase.LOCATION_TYPE));
-                        latlngcur = mGeofenceCursor.getString(mGeofenceCursor.getColumnIndex(LocationsDatabase.LATLNGS));
-                        name = mGeofenceCursor.getString(mGeofenceCursor.getColumnIndex(LocationsDatabase.LOCATION_NAME));
-                        address = mGeofenceCursor.getString(mGeofenceCursor.getColumnIndex(LocationsDatabase.ADDRESS));
-                        tag = mGeofenceCursor.getString(mGeofenceCursor.getColumnIndex(LocationsDatabase.GEOFENCE_TAG));
-
-                        Log.d(TAG, "ID : " + id);
-                        Log.d(TAG, "profile type : " + pt);
-                        Log.d(TAG, "location type : " + lt);
-                        Log.d(TAG, "latlng : " + latlngcur);
-                        Log.d(TAG, "name : " + name);
-                        Log.d(TAG, "address : " + address);
-                        Log.d(TAG, " Geofence tag : " + tag);
-
-
-                        mGeofenceCursor.moveToNext();
-
-                    }
+                
                 }
                 Log.d(TAG, "cursor :" + mGeofenceCursor);
                 return mGeofenceCursor;
@@ -190,6 +210,7 @@ public class RemoveGeofences extends Activity implements LoaderManager.LoaderCal
 
     @Override
     public void onDeleteComplete(String tag) {
+        updateUI();
         getLoaderManager().restartLoader(Constants.LOADER_ID, null, this);
 
         removeGeofenceByTag(tag);

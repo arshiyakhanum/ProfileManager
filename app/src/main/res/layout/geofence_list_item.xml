@@ -1,37 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingRight="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_vertical_margin"
-    android:paddingTop="@dimen/activity_horizontal_margin"
+    android:orientation="vertical"
     android:paddingBottom="@dimen/activity_horizontal_margin"
-    android:orientation="vertical">
+    android:paddingLeft="@dimen/activity_vertical_margin"
+    android:paddingRight="@dimen/activity_vertical_margin"
+    android:paddingTop="@dimen/activity_horizontal_margin"
+    android:background="@color/white">
+
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:id="@+id/location_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:text="@string/location_name"
+        android:layout_marginBottom="8dp"
         android:textColor="@color/black"
-        android:textSize="16sp"
-        />
+        android:textSize="16sp" />
+
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:id="@+id/geofences_address"
-        android:textColor="@color/blackO60"
-        android:text="@string/text_here"
-        android:layout_marginBottom="20dp"
-        android:textSize="14sp"/>
-    <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/location_name"
+        android:text="@string/text_here"
+        android:textColor="@color/blackO60"
+        android:textSize="14sp" />
+
+
+    <Button
         android:id="@+id/remove_geofence_list_item"
-        android:background="@android:color/holo_blue_dark"
-        android:drawableLeft="@drawable/delete"
-        android:text="@string/delete"
-        android:textColor="@color/white"
-        android:textSize="20sp"/>
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/delete_black"
+        android:layout_below="@id/geofences_address"
+        android:layout_alignParentRight="true"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/remove_geofence_list_item"
+        android:layout_marginTop="8dp"
+        android:background="@color/grey" />
 
 
-</LinearLayout>
+</RelativeLayout>

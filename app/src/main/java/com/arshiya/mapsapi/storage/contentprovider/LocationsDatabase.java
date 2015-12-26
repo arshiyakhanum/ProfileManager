@@ -116,13 +116,14 @@ public class LocationsDatabase extends SQLiteOpenHelper {
 
         return mDB.query(LOCATION_TABLE_NAME, new String[]{GEOFENCE_TAG}, selection, new String[]{geofencetag}, null, null, null);
     }
+
     public Cursor getGeofenceTags(String address, String locationName) {
         String selection = LocationsDatabase.ADDRESS + " = ? and " + LocationsDatabase.LOCATION_NAME + " = ?";
 
         return mDB.query(LOCATION_TABLE_NAME, new String[]{GEOFENCE_TAG}, selection, new String[]{address, locationName}, null, null, null);
     }
 
-    public Cursor getProfileType(String geotag){
+    public Cursor getProfileType(String geotag) {
         String selection = LocationsDatabase.GEOFENCE_TAG + " = ? ";//and " + LocationsDatabase.LOCATION_NAME + " = ?";
 
         return mDB.query(LOCATION_TABLE_NAME, new String[]{PROFILE_TYPE}, selection, new String[]{geotag}, null, null, null);

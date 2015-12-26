@@ -14,7 +14,7 @@
         <LinearLayout
             android:id="@+id/night_mode_holder"
             android:layout_width="match_parent"
-            android:layout_height="72dp"
+            android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <ImageView
@@ -23,20 +23,24 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="16dp"
+                android:id="@+id/night_mode_image"
                 android:src="@drawable/night_mode" />
 
             <RelativeLayout
                 android:id="@+id/dnd_descrioption_holder"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.1"
-                android:padding="16dp">
+                android:layout_width="254dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:layout_marginTop="16dp"
+                android:paddingRight="16dp"
+                android:paddingLeft="16dp">
 
                 <TextView
                     android:id="@+id/dnd_header"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/dnd_header"
+                    android:lineSpacingExtra="8dp"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
@@ -58,7 +62,7 @@
                 android:background="@null"
                 android:button="@drawable/checked_box"
                 android:gravity="center_vertical"
-                android:padding="16dp" />
+                android:layout_margin="16dp" />
 
         </LinearLayout>
 
@@ -162,6 +166,6 @@
 
         </View>
 
-    </LinearLayout>
+        </LinearLayout>
 
 </ScrollView>

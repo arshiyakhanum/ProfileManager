@@ -29,11 +29,10 @@ public class MapDataProvider {
 
     public MapDataProvider(Context context) {
         mContext = context;
-        prepareMapData();
     }
 
 
-    private void prepareMapData() {
+    public void prepareMapData() {
         mCircleOptionsArrayList = new ArrayList<CircleOptions>();
         mMarkerOptionsArrayList = new ArrayList<MarkerOptions>();
 
@@ -77,13 +76,14 @@ public class MapDataProvider {
                 Log.d(TAG, "name : " + name);
 
                 //get the color
-                int outline = getOutlineColor(pt);
-                int stroke = getStrokeColor(pt);
+//                int outline = getOutlineColor(pt);
+//                int stroke = getStrokeColor(pt);
 
-                CircleOptions circleOptions = new CircleOptions().center(latLng)
-                        .radius(Constants.GEOFENCE_RADIUS)
-                        .strokeColor(outline)
-                        .fillColor(stroke);
+                CircleOptions circleOptions = getCircle(pt, latLng);
+//                        new CircleOptions().center(latLng)
+//                        .radius(Constants.GEOFENCE_RADIUS)
+//                        .strokeColor(outline)
+//                        .fillColor(stroke);
 
                 //Marker option
                 MarkerOptions markerOptions = new MarkerOptions();
@@ -96,11 +96,22 @@ public class MapDataProvider {
                 cursor.moveToNext();
             }
         }
+        cursor.close();
+    }
+
+    public CircleOptions getCircle(int profileType, LatLng latLng) {
+        int outline = getOutlineColor(profileType);
+        int stroke = getStrokeColor(profileType);
+
+        return new CircleOptions().center(latLng)
+                .radius(Constants.GEOFENCE_RADIUS)
+                .strokeColor(outline)
+                .fillColor(stroke);
     }
 
     private int getOutlineColor(int pt) {
         int color = mContext.getResources().getColor(R.color.red_outer);
-        switch (pt){
+        switch (pt) {
             case Constants.PROFILE_NORMAL:
                 color = mContext.getResources().getColor(R.color.green);
                 break;
@@ -113,12 +124,12 @@ public class MapDataProvider {
                 color = mContext.getResources().getColor(R.color.circle_ouline_blue);
                 break;
         }
-        return  color;
+        return color;
     }
 
     private int getStrokeColor(int pt) {
         int color = mContext.getResources().getColor(R.color.redO30);
-        switch (pt){
+        switch (pt) {
             case Constants.PROFILE_NORMAL:
                 color = mContext.getResources().getColor(R.color.greenO30);
                 break;
@@ -131,7 +142,7 @@ public class MapDataProvider {
                 color = mContext.getResources().getColor(R.color.circle_stroke_blue);
                 break;
         }
-        return  color;
+        return color;
     }
 
     public ArrayList<CircleOptions> getCircleOptions() {

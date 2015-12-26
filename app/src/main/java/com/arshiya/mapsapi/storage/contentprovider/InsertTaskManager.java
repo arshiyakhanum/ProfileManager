@@ -3,12 +3,15 @@ package com.arshiya.mapsapi.storage.contentprovider;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Message;
 import android.os.Messenger;
 import android.util.Log;
 
+import com.arshiya.mapsapi.R;
 import com.arshiya.mapsapi.common.Constants;
 
 /**
@@ -39,29 +42,45 @@ public class InsertTaskManager {
         protected Integer doInBackground(ContentValues... params) {
             Log.d(TAG, " do in background");
 
-            LocationsContentProvider provider = new LocationsContentProvider();
-            int size = provider.getSize();
+            LocationsDatabase db = new LocationsDatabase(mContext);
+            int size = db.getSize();
 
-            if (size == Constants.MAX_GEOFENCE_SIZE){
+            if (size == Constants.MAX_GEOFENCE_SIZE) {
                 //max geofence  limit is reached cannot add any more geofences
-                return -1;
+                return Constants.MAX_SIZE_ERROR;
             }
 
             ContentResolver cr = mContext.getContentResolver();
             Uri uri = cr.insert(LocationsContentProvider.CONTENT_URI, params[0]);
             if (null == uri) {
                 Log.e(TAG, " writing to table failed");
-                return 0;
+                return Constants.INSERT_ERROR;
             } else {
                 Log.d(TAG, " write to table done, uri : " + uri);
             }
-            return 1;
+            return Constants.INSERT_SUCCESS;
         }
 
         @Override
         protected void onPostExecute(Integer status) {
+            Message message = new Message();
 
+            if (Constants.INSERT_SUCCESS != status) {
+                Resources resources = mContext.getResources();
+                switch (status) {
+                    case Constants.MAX_SIZE_ERROR:
+                        message.arg1 = Constants.MAX_SIZE_ERROR;
+                        message.obj = resources.getString(R.string.geofence_max_limit_reached);
+                        break;
 
+                    case Constants.INSERT_ERROR:
+                        message.arg1 = Constants.INSERT_ERROR;
+                        message.obj = resources.getString(R.string.insert_error);
+                        break;
+                }
+            } else {
+
+            }
             //todo delete - start
             //read
             Cursor cursor = mContext.getContentResolver().query(LocationsContentProvider.CONTENT_URI, new String[]{
@@ -101,8 +120,11 @@ public class InsertTaskManager {
                     cursor.moveToNext();
 
                 }
+                cursor.close();
+
             }
             //todo delete - end
         }
+
     }
 }

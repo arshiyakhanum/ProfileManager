@@ -14,8 +14,6 @@ import android.widget.Toast;
 
 import com.arshiya.mapsapi.R;
 import com.arshiya.mapsapi.common.Fonts;
-//import com.arshiya.mapsapi.common.CurrentActivityContext;
-//import com.arshiya.mapsapi.common.FontConstants;
 
 /**
  * Created by akhanumx on 10/22/2015.

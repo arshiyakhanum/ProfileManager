@@ -13,6 +13,7 @@
     <color name="greenO30">#4D279149</color>
     <color name="circle_ouline_blue">#0076a9</color>
     <color name="circle_stroke_blue">#4D0076a9</color>
+    <color name="blue_bg">#0059AB</color>
     <color name="blue">#00b1ff</color>
     <color name="blue2">#049dd9</color>
     <color name="action_bar">#e4e4e4</color>

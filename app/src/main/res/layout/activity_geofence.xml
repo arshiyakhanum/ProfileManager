@@ -8,8 +8,33 @@
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/geofences_list">
+        android:id="@+id/geofences_list"
+        android:visibility="gone">
 
     </ListView>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/empty_list_error_holder">
+
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="100dp"
+            android:background="@drawable/location_marker"
+            android:id="@+id/location_image"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/location_image"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:text="@string/location_message"
+            android:layout_centerHorizontal="true"/>
+
+
+    </RelativeLayout>
 
 </RelativeLayout>
