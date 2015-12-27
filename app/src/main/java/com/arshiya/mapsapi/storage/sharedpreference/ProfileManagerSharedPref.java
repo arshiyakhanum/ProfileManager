@@ -180,4 +180,14 @@ public class ProfileManagerSharedPref {
     public String getCurrentGeofenceId(){
         return mPreferences.getString("current_geofence_id", null);
     }
+
+    public boolean isNightModeOn() {
+        return mPreferences.getBoolean("in_night_mode", false);
+    }
+
+    public void nightModeOn(boolean nightMode) {
+        mEditor.putBoolean("in_night_mode", nightMode);
+        mEditor.apply();
+    }
 }
+
