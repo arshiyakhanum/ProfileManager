@@ -29,14 +29,17 @@ public class UpdateProfile {
     private void changeProfile(int profile) {
         switch (profile) {
             case Constants.PROFILE_NORMAL:
+                Log.d(TAG, "updated profile to : NORMAL");
                 setNormalVolumeSettings();
                 break;
 
             case Constants.PROFILE_SILENT:
+                Log.d(TAG, "updated profile to : SILENT");
                 setSilentVolumeSettings();
                 break;
 
             case Constants.PROFILE_VIBRATE:
+                Log.d(TAG, "updated profile to : VIBRATE");
                 setVibrateVolumeSettings();
                 break;
 

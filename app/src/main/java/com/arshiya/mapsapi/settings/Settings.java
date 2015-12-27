@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.arshiya.mapsapi.R;
 import com.arshiya.mapsapi.common.Constants;
 import com.arshiya.mapsapi.common.Fonts;
+import com.arshiya.mapsapi.profilemanager.UpdateProfile;
 import com.arshiya.mapsapi.storage.sharedpreference.ProfileManagerSharedPref;
 
 import org.w3c.dom.Text;
@@ -44,7 +45,6 @@ public class Settings extends Activity implements CompoundButton.OnCheckedChange
     private int mToMinute;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,8 +63,8 @@ public class Settings extends Activity implements CompoundButton.OnCheckedChange
         mFromLayout = (LinearLayout) findViewById(R.id.from_time_holder);
         mToLayout = (LinearLayout) findViewById(R.id.to_time_holder);
         mScheduleHolder = (LinearLayout) findViewById(R.id.settings_schedule_holder);
-        mFromTime = (TextView)findViewById(R.id.from_time);
-        mToTime = (TextView)findViewById(R.id.to_time);
+        mFromTime = (TextView) findViewById(R.id.from_time);
+        mToTime = (TextView) findViewById(R.id.to_time);
 
         TextView nightMode = (TextView) findViewById(R.id.dnd_header);
         TextView description = (TextView) findViewById(R.id.dnd_description);
@@ -88,10 +88,10 @@ public class Settings extends Activity implements CompoundButton.OnCheckedChange
         mProfileManagerSharedPref = ProfileManagerSharedPref.gcSharedPreferenceInstance(this);
         mNightModeCB.setChecked(mProfileManagerSharedPref.isNightModeEnabled());
 
-        if (mNightModeCB.isChecked()){
+        if (mNightModeCB.isChecked()) {
             showScheduleHolder();
 
-        }else {
+        } else {
             mScheduleHolder.setVisibility(View.GONE);
         }
 
@@ -154,6 +154,18 @@ public class Settings extends Activity implements CompoundButton.OnCheckedChange
             //cancel the alarms and hide options
             mScheduleHolder.setVisibility(View.GONE);
             mProfileManagerSharedPref.setAlarm(false);
+
+            /**
+             * check if night mode is on
+             */
+        if (mProfileManagerSharedPref.isNightModeOn()){
+            mProfileManagerSharedPref.nightModeOn(false);
+
+            new UpdateProfile( mProfileManagerSharedPref.getSavedRingerMode(),
+                    (AudioManager) getSystemService(AUDIO_SERVICE));
+        }
+
+
             cancelAlarm();
         }
     }
@@ -216,10 +228,11 @@ public class Settings extends Activity implements CompoundButton.OnCheckedChange
 
         }
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == Constants.FROM_TIME || requestCode == Constants.TO_TIME){
-            if (RESULT_OK == resultCode){
+        if (requestCode == Constants.FROM_TIME || requestCode == Constants.TO_TIME) {
+            if (RESULT_OK == resultCode) {
                 showScheduleHolder();
                 setAlarm(mProfileManagerSharedPref.getStartTime(), mProfileManagerSharedPref.getEndTime());
 
@@ -229,13 +242,28 @@ public class Settings extends Activity implements CompoundButton.OnCheckedChange
     }
 
 
-    private void setAlarm(Bundle startTimeData, Bundle endTimeData){
+    private void setAlarm(Bundle startTimeData, Bundle endTimeData) {
         int startHour;
         int startMinute;
         int endHour;
         int endMinute;
         long startTime;
         long endTime;
+
+        /**
+         * check  if night mode is on
+         */
+
+        if (mProfileManagerSharedPref.isNightModeOn()){
+            mProfileManagerSharedPref.setAlarm(false);
+            mProfileManagerSharedPref.nightModeOn(false);
+
+            new UpdateProfile( mProfileManagerSharedPref.getSavedRingerMode(),
+                    (AudioManager) getSystemService(AUDIO_SERVICE));
+        }
+
+
+        cancelAlarm();
 
         startHour = startTimeData.getInt("start_hour", 0);
         startMinute = startTimeData.getInt("start_minute", 0);
@@ -270,7 +298,7 @@ public class Settings extends Activity implements CompoundButton.OnCheckedChange
         Calendar currentCal = Calendar.getInstance();
         long curTimeInMillis = currentCal.getTimeInMillis();
 
-        if (startTime < curTimeInMillis && curTimeInMillis < endTime){
+        if (startTime < curTimeInMillis && curTimeInMillis < endTime) {
             Log.d(TAG, " start time < current time ");
             //start the service
 //            AudioManager audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
@@ -300,7 +328,6 @@ public class Settings extends Activity implements CompoundButton.OnCheckedChange
 
         alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, endTime,
                 AlarmManager.INTERVAL_DAY, endPI);
-
 
 
     }
