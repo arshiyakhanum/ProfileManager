@@ -14,65 +14,62 @@ import com.arshiya.mapsapi.R;
  */
 public class ConfirmationDialog {
 
-    private static final String TAG = ConfirmationDialog.class.getSimpleName();
-    private static AlertDialog.Builder mBuilder;
-    private static AlertDialog mDialog;
-    private static OnClickCallback mOnClickCallback;
+  private static final String TAG = ConfirmationDialog.class.getSimpleName();
+  private static AlertDialog.Builder mBuilder;
+  private static AlertDialog mDialog;
+  private static OnClickCallback mOnClickCallback;
 
-    public static AlertDialog getDialog(Context context, String title, String description, String query) {
-        LayoutInflater inflater= (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View dialogView = inflater.inflate(R.layout.confirmation_pop_up, null);
+  public static AlertDialog getDialog(Context context, String title, String description,
+      String query) {
+    LayoutInflater inflater =
+        (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    View dialogView = inflater.inflate(R.layout.confirmation_pop_up, null);
 
-        mOnClickCallback = (OnClickCallback) context;
+    mOnClickCallback = (OnClickCallback) context;
 
-        //build alert dialog and alert dialog builder
-        mBuilder = new AlertDialog.Builder(context);
-        mDialog = mBuilder.create();
+    //build alert dialog and alert dialog builder
+    mBuilder = new AlertDialog.Builder(context);
+    mDialog = mBuilder.create();
 
-        mDialog.setView(dialogView);
+    mDialog.setView(dialogView);
 
-        TextView titleTV = (TextView) dialogView.findViewById(R.id.ca_title);
-        TextView contentTV = (TextView) dialogView.findViewById(R.id.ca_description);
-        TextView queryTV = (TextView) dialogView.findViewById(R.id.ca_assert);
-        Button ok = (Button) dialogView.findViewById(R.id.ca_ok);
-        Button cancel = (Button) dialogView.findViewById(R.id.ca_cancel);
+    TextView titleTV = (TextView) dialogView.findViewById(R.id.ca_title);
+    TextView contentTV = (TextView) dialogView.findViewById(R.id.ca_description);
+    TextView queryTV = (TextView) dialogView.findViewById(R.id.ca_assert);
+    Button ok = (Button) dialogView.findViewById(R.id.ca_ok);
+    Button cancel = (Button) dialogView.findViewById(R.id.ca_cancel);
 
-        titleTV.setTypeface(Fonts.ROBOTOMEDIUM);
-        contentTV.setTypeface(Fonts.ROBOTOREGULAR);
-        ok.setTypeface(Fonts.ROBOTOMEDIUM);
-        cancel.setTypeface(Fonts.ROBOTOMEDIUM);
+    titleTV.setTypeface(Fonts.ROBOTOMEDIUM);
+    contentTV.setTypeface(Fonts.ROBOTOREGULAR);
+    ok.setTypeface(Fonts.ROBOTOMEDIUM);
+    cancel.setTypeface(Fonts.ROBOTOMEDIUM);
 
+    ok.setOnClickListener(new View.OnClickListener() {
+      @Override public void onClick(View v) {
+        mOnClickCallback.onClickCD(Constants.ACTION_OK);
+      }
+    });
+    cancel.setOnClickListener(new View.OnClickListener() {
+      @Override public void onClick(View v) {
+        mOnClickCallback.onClickCD(Constants.ACTON_CANCEL);
+      }
+    });
+    mDialog.setView(dialogView);
 
-        ok.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               mOnClickCallback.onClickCD(Constants.ACTION_OK);
-            }
-        });
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mOnClickCallback.onClickCD(Constants.ACTON_CANCEL);
+    titleTV.setText(title);
 
-            }
-        });
-        mDialog.setView(dialogView);
+    //        if (null != mSelectedAddress) {
+    //            description += mSelectedAddress;
+    //        } else {
+    //            mSelectedAddress = mSelectedLatLng.toString();
+    //            description += mSelectedLatLng;
+    //        }
+    contentTV.setText(description);
+    queryTV.setText(query);
+    return mDialog;
+  }
 
-        titleTV.setText(title);
-
-//        if (null != mSelectedAddress) {
-//            description += mSelectedAddress;
-//        } else {
-//            mSelectedAddress = mSelectedLatLng.toString();
-//            description += mSelectedLatLng;
-//        }
-        contentTV.setText(description);
-        queryTV.setText(query);
-        return mDialog;
-
-    }
-
-    public interface OnClickCallback{
-        public void onClickCD(int state);
-    }
+  public interface OnClickCallback {
+    public void onClickCD(int state);
+  }
 }

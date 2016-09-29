@@ -44,7 +44,7 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".mapactivities.MapsActivity"
+            android:name=".ui.activity.MapsActivity"
             android:label="@string/title_activity_maps"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Holo.NoActionBar" />
@@ -55,13 +55,13 @@
             android:exported="false" />
 
         <activity
-            android:name=".locationdatamanager.LocationDetailsGetter"
+            android:name=".ui.activity.LocationDetailsGetterActivity"
             android:label="@string/title_activity_location_details_getter"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Holo.Dialog.NoActionBar">
         </activity>
         <activity
-            android:name=".mapactivities.MainActivity"
+            android:name=".ui.activity.MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Holo.NoActionBar">
@@ -72,10 +72,10 @@
         </activity>
 
         <activity
-            android:name=".geofence.ui.RemoveGeofences"
+            android:name=".ui.activity.RemoveGeofencesActivity"
             android:label="@string/title_activity_geofence"
             android:launchMode="singleTask"
-            android:parentActivityName=".mapactivities.MainActivity"
+            android:parentActivityName=".ui.activity.MainActivity"
             android:screenOrientation="portrait">
 
         </activity>
@@ -85,15 +85,15 @@
         </service>
 
         <activity
-            android:name=".settings.Settings"
+            android:name=".ui.activity.SettingsActivity"
             android:label="@string/title_activity_settings"
             android:launchMode="singleTask"
-            android:parentActivityName=".mapactivities.MainActivity"
+            android:parentActivityName=".ui.activity.MainActivity"
             android:screenOrientation="portrait">
 
         </activity>
         <activity
-            android:name=".settings.TimeSetActivity"
+            android:name=".ui.activity.TimeSetActivity"
             android:label="@string/title_activity_time_set"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Holo.Dialog.NoActionBar">
@@ -108,10 +108,10 @@
         <!-- </intent-filter> -->
         <!-- </receiver> -->
         <activity
-            android:name=".about.About"
+            android:name=".ui.activity.AboutActivity"
             android:label="@string/title_activity_about"
             android:launchMode="singleTask"
-            android:parentActivityName=".mapactivities.MainActivity"
+            android:parentActivityName=".ui.activity.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Holo.NoActionBar">
 

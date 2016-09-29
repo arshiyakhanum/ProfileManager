@@ -17,46 +17,43 @@ import java.util.ArrayList;
 /**
  * Created by akhanumx on 10/28/2015.
  */
-public class CustomSliderListAdapter extends BaseAdapter{
+public class CustomSliderListAdapter extends BaseAdapter {
 
-    private ArrayList<SliderListItem> mSliderListItemList;
-    private Context mContext;
+  private ArrayList<SliderListItem> mSliderListItemList;
+  private Context mContext;
 
-    public CustomSliderListAdapter(Context context, ArrayList<SliderListItem> sliderListItems){
-        mContext = context;
-        mSliderListItemList = sliderListItems;
+  public CustomSliderListAdapter(Context context, ArrayList<SliderListItem> sliderListItems) {
+    mContext = context;
+    mSliderListItemList = sliderListItems;
+  }
+
+  @Override public int getCount() {
+    return mSliderListItemList.size();
+  }
+
+  @Override public Object getItem(int position) {
+    return mSliderListItemList.get(position);
+  }
+
+  @Override public long getItemId(int position) {
+    return mSliderListItemList.indexOf(position);
+  }
+
+  @Override public View getView(int position, View convertView, ViewGroup parent) {
+    if (null == convertView) {
+      LayoutInflater inflater =
+          (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+      convertView = inflater.inflate(R.layout.slide_bar_item, null);
     }
-    @Override
-    public int getCount() {
-        return mSliderListItemList.size();
-    }
 
-    @Override
-    public Object getItem(int position) {
-        return mSliderListItemList.get(position);
-    }
+    SliderListItem sliderListItem = mSliderListItemList.get(position);
+    ImageView icon = (ImageView) convertView.findViewById(R.id.slider_item_icon);
+    TextView title = (TextView) convertView.findViewById(R.id.slider_item_name);
 
-    @Override
-    public long getItemId(int position) {
-        return mSliderListItemList.indexOf(position);
-    }
+    title.setTypeface(Fonts.ROBOTOMEDIUM);
+    icon.setImageResource(sliderListItem.mIcon);
+    title.setText(sliderListItem.mTitle);
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        if (null == convertView){
-            LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.slide_bar_item, null);
-        }
-
-        SliderListItem sliderListItem = mSliderListItemList.get(position);
-        ImageView icon = (ImageView) convertView.findViewById(R.id.slider_item_icon);
-        TextView title = (TextView) convertView.findViewById(R.id.slider_item_name);
-
-        title.setTypeface(Fonts.ROBOTOMEDIUM);
-        icon.setImageResource(sliderListItem.mIcon);
-        title.setText(sliderListItem.mTitle);
-
-        return convertView;
-
-    }
+    return convertView;
+  }
 }

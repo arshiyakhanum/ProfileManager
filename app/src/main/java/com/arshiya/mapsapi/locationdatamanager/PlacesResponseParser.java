@@ -15,61 +15,60 @@ import java.util.List;
  */
 public class PlacesResponseParser {
 
-    private static final String TAG = "PlacesResponseParser";
+  private static final String TAG = "PlacesResponseParser";
 
-    public List<HashMap<String, String>> parsePlace(JSONObject jsonObject){
-        JSONArray placesArray = null;
-        try {
-            placesArray = jsonObject.getJSONArray("predictions");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        return  getPredictedPlaces(placesArray);
+  public List<HashMap<String, String>> parsePlace(JSONObject jsonObject) {
+    JSONArray placesArray = null;
+    try {
+      placesArray = jsonObject.getJSONArray("predictions");
+    } catch (JSONException e) {
+      e.printStackTrace();
     }
 
-    private List<HashMap<String, String>> getPredictedPlaces(JSONArray placesArray) {
-        List<HashMap<String, String>> placesList = new ArrayList<HashMap<String, String>>();
-        HashMap<String, String> place = null;
-        int count = placesArray.length();
+    return getPredictedPlaces(placesArray);
+  }
 
-        for (int i = 0; i < count; i++){
-            try {
-                place = getPlace((JSONObject) placesArray.get(i));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            placesList.add(place);
-        }
+  private List<HashMap<String, String>> getPredictedPlaces(JSONArray placesArray) {
+    List<HashMap<String, String>> placesList = new ArrayList<HashMap<String, String>>();
+    HashMap<String, String> place = null;
+    int count = placesArray.length();
 
-        return placesList;
+    for (int i = 0; i < count; i++) {
+      try {
+        place = getPlace((JSONObject) placesArray.get(i));
+      } catch (JSONException e) {
+        e.printStackTrace();
+      }
+      placesList.add(place);
     }
 
-    private HashMap<String, String> getPlace(JSONObject placeObject){
-        HashMap<String, String> place = new HashMap<String, String>();
+    return placesList;
+  }
 
-        Log.d(TAG, "JSONObject : " + placeObject);
-        String place_id = "";
-        String description = "";
-        String reference = "";
-        String types = "";
+  private HashMap<String, String> getPlace(JSONObject placeObject) {
+    HashMap<String, String> place = new HashMap<String, String>();
 
-        try {
-            description = placeObject.getString("description");
-            place_id = placeObject.getString("place_id");
-            reference = placeObject.getString("reference");
-            types = placeObject.getString("types");
+    Log.d(TAG, "JSONObject : " + placeObject);
+    String place_id = "";
+    String description = "";
+    String reference = "";
+    String types = "";
 
-            place.put("description", description);
-            place.put("id", place_id);
-            place.put("reference", reference);
-            place.put("types", types);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+    try {
+      description = placeObject.getString("description");
+      place_id = placeObject.getString("place_id");
+      reference = placeObject.getString("reference");
+      types = placeObject.getString("types");
 
-        return  place;
+      place.put("description", description);
+      place.put("id", place_id);
+      place.put("reference", reference);
+      place.put("types", types);
+    } catch (JSONException e) {
+      e.printStackTrace();
     }
 
+    return place;
+  }
 }
 

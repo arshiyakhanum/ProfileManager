@@ -1,4 +1,4 @@
-package com.arshiya.mapsapi.mapactivities;
+package com.arshiya.mapsapi.ui.views;
 
 import android.content.Context;
 import android.util.AttributeSet;
