@@ -9,7 +9,7 @@ import com.arshiya.mapsapi.common.Constants;
 import com.google.android.gms.maps.model.LatLng;
 
 /**
- * Created by akhanumx on 10/29/2015.
+ * Created by arshiya on 10/29/2015.
  */
 public class ProfileManagerSharedPref {
 

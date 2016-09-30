@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * Created by akhanumx on 10/26/2015.
+ * Created by arshiya on 10/26/2015.
  */
 public class PlacesResponseParser {
 

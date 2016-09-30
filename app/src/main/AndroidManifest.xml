@@ -72,7 +72,7 @@
         </activity>
 
         <activity
-            android:name=".ui.activity.RemoveGeofencesActivity"
+            android:name=".ui.activity.ProfilesListActivity"
             android:label="@string/title_activity_geofence"
             android:launchMode="singleTask"
             android:parentActivityName=".ui.activity.MainActivity"

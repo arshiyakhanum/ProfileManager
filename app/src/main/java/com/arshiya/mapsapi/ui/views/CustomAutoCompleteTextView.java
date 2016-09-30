@@ -7,7 +7,7 @@ import android.widget.AutoCompleteTextView;
 import java.util.HashMap;
 
 /**
- * Created by akhanumx on 10/26/2015.
+ * Created by arshiya on 10/26/2015.
  */
 public class CustomAutoCompleteTextView extends AutoCompleteTextView {
     public CustomAutoCompleteTextView(Context context, AttributeSet attributeSet) {

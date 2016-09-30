@@ -15,7 +15,7 @@ import com.arshiya.mapsapi.R;
 import com.arshiya.mapsapi.common.Constants;
 
 /**
- * Created by akhanumx on 10/28/2015.
+ * Created by arshiya on 10/28/2015.
  */
 public class InsertTaskManager {
     private static final String TAG = InsertTaskManager.class.getSimpleName();

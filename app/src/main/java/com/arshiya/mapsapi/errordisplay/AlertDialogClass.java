@@ -14,7 +14,7 @@ import com.arshiya.mapsapi.R;
 import com.arshiya.mapsapi.common.Fonts;
 
 /**
- * Created by akhanumx on 10/22/2015.
+ * Created by arshiya on 10/22/2015.
  */
 public class AlertDialogClass {
 

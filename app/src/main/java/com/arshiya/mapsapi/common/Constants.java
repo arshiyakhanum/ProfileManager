@@ -1,7 +1,7 @@
 package com.arshiya.mapsapi.common;
 
 /**
- * Created by akhanumx on 10/28/2015.
+ * Created by arshiya on 10/28/2015.
  */
 public class Constants {
 

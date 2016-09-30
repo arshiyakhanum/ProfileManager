@@ -5,7 +5,7 @@ import android.content.Context;
 import android.util.Log;
 
 /**
- * Created by akhanumx on 10/25/2015.
+ * Created by arshiya on 10/25/2015.
  */
 public class ProfileManagerApplication extends Application {
 

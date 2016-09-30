@@ -7,7 +7,7 @@ import com.arshiya.mapsapi.R;
 import com.google.android.gms.location.GeofenceStatusCodes;
 
 /**
- * Created by akhanumx on 10/30/2015.
+ * Created by arshiya on 10/30/2015.
  */
 public class GeofenceErrorMessage {
 

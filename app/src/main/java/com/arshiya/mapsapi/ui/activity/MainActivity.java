@@ -29,7 +29,7 @@ import com.arshiya.mapsapi.common.Constants;
 import com.arshiya.mapsapi.common.Fonts;
 import com.arshiya.mapsapi.errordisplay.AlertDialogClass;
 import com.arshiya.mapsapi.geocodermanager.GeoCoderFetchAddress;
-import com.arshiya.mapsapi.locationdatamanager.CustomSliderListAdapter;
+import com.arshiya.mapsapi.ui.adapters.CustomSliderListAdapter;
 import com.arshiya.mapsapi.storage.sharedpreference.ProfileManagerSharedPref;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -189,7 +189,7 @@ public class MainActivity extends Activity
         break;
 
       case R.id.home_remove_location:
-        Intent removeIntent = new Intent(this, RemoveGeofencesActivity.class);
+        Intent removeIntent = new Intent(this, ProfilesListActivity.class);
         startActivity(removeIntent);
         break;
     }

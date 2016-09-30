@@ -10,7 +10,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 /**
- * Created by akhanumx on 10/27/2015.
+ * Created by arshiya on 10/27/2015.
  */
 public class DownloadUrl {
 

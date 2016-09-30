@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.arshiya.mapsapi.R;
 
 /**
- * Created by akhanumx on 11/11/2015.
+ * Created by arshiya on 11/11/2015.
  */
 public class ConfirmationDialog {
 
