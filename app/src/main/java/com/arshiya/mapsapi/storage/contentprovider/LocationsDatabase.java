@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
 
 /**
- * Created by akhanumx on 10/28/2015.
+ * Created by arshiya on 10/28/2015.
  */
 
 public class LocationsDatabase extends SQLiteOpenHelper {

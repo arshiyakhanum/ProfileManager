@@ -3,7 +3,7 @@ package com.arshiya.mapsapi.common;
 import android.graphics.Typeface;
 
 /**
- * Created by akhanumx on 11/4/2015.
+ * Created by arshiya on 11/4/2015.
  */
 public class Fonts {
 

@@ -10,7 +10,7 @@ import android.net.Uri;
 import java.sql.SQLException;
 
 /**
- * Created by akhanumx on 10/28/2015.
+ * Created by arshiya on 10/28/2015.
  */
 
 /**

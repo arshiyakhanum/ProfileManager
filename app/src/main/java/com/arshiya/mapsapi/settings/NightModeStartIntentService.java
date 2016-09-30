@@ -10,7 +10,7 @@ import com.arshiya.mapsapi.profilemanager.UpdateProfile;
 import com.arshiya.mapsapi.storage.sharedpreference.ProfileManagerSharedPref;
 
 /**
- * Created by akhanumx on 11/5/2015.
+ * Created by arshiya on 11/5/2015.
  */
 public class NightModeStartIntentService extends IntentService {
 

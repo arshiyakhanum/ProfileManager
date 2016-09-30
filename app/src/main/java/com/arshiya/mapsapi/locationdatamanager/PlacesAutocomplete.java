@@ -9,7 +9,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 /**
- * Created by akhanumx on 11/9/2015.
+ * Created by arshiya on 11/9/2015.
  */
 public class PlacesAutocomplete {
 

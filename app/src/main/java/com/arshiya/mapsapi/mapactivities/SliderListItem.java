@@ -1,7 +1,7 @@
 package com.arshiya.mapsapi.mapactivities;
 
 /**
- * Created by akhanumx on 10/28/2015.
+ * Created by arshiya on 10/28/2015.
  */
 public class SliderListItem {
 
