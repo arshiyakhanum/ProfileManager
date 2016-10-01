@@ -2,7 +2,10 @@ package com.arshiya.mapsapi.profilemanager;
 
 import android.media.AudioManager;
 import android.util.Log;
-import com.arshiya.mapsapi.common.Constants;
+
+import static com.arshiya.mapsapi.common.Constants.RINGER_MODE_NORMAL;
+import static com.arshiya.mapsapi.common.Constants.RINGER_MODE_SILENT;
+import static com.arshiya.mapsapi.common.Constants.RINGER_MODE_VIBRATE;
 
 /**
  * Created by arshiya on 15/11/15.
@@ -23,17 +26,17 @@ public class UpdateProfile {
 
   private void changeProfile(int profile) {
     switch (profile) {
-      case Constants.PROFILE_NORMAL:
+      case RINGER_MODE_NORMAL:
         Log.d(TAG, "updated profile to : NORMAL");
         setNormalVolumeSettings();
         break;
 
-      case Constants.PROFILE_SILENT:
+      case RINGER_MODE_SILENT:
         Log.d(TAG, "updated profile to : SILENT");
         setSilentVolumeSettings();
         break;
 
-      case Constants.PROFILE_VIBRATE:
+      case RINGER_MODE_VIBRATE:
         Log.d(TAG, "updated profile to : VIBRATE");
         setVibrateVolumeSettings();
         break;

@@ -3,45 +3,49 @@ package com.arshiya.mapsapi.common;
 /**
  * Created by arshiya on 10/28/2015.
  */
-public class Constants {
+public interface Constants {
 
-  public static final int PROFILE_NORMAL = 2;
-  public static final int PROFILE_VIBRATE = 1;
-  public static final int PROFILE_SILENT = 0;
+  String GOOGLE_PLACES_AUTOCOMPLETE_URL = "https://maps.googleapis.com/maps/api/place/autocomplete/";
+  String BROWSER_API_KEY = "key=AIzaSyDwQPWM53Jffxg1hVelNV86mqeJu35yAIo";
 
-  public static final int LOCATION_AREA = 0;
-  public static final int LOCATION_SINGLE = 1;
+  int RINGER_MODE_NORMAL = 2;
+  int RINGER_MODE_VIBRATE = 1;
+  int RINGER_MODE_SILENT = 0;
 
-  public static int NORMAL_VOLUME_LEVEL = 5;
+  int ACTION_SEARCH = 10;
+  int ACTION_FETCH_ADDRESS = 11;
+  int ACTION_AUTOCOMPLETE = 12;
+  int ACTION_AUTOCOMPLETE_RESULT = 13;
+  int ACTION_OK = 14;
+  int ACTON_CANCEL = 15;
 
-  public static final int GEOFENCE_RADIUS = 100;
-  public static final int GEOFENCE_LOITERING_DELAY = 3 * 1000;
+  int FETCH_FAILED = 30;
+  int FETCH_SUCCESS = 31;
+  int MAX_SIZE_ERROR = 32;
+  int INSERT_ERROR = 33;
+  int INSERT_SUCCESS = 34;
 
-  public static final int ACTION_SEARCH = 10;
-  public static final int ACTION_FETCH_ADDRESS = 11;
-  public static final int ACTION_AUTOCOMPLETE = 12;
-  public static final int ACTION_AUTOCOMPLETE_RESULT = 13;
-  public static final int ACTION_OK = 14;
-  public static final int ACTON_CANCEL = 15;
 
-  public static final int LOADER_ID = 20;
-  public static final int MAX_GEOFENCE_SIZE = 100;
+  int LOCATION_AREA = 0;
+  int LOCATION_SINGLE = 1;
 
-  public static final int FETCH_FAILED = 30;
-  public static final int FETCH_SUCCESS = 31;
-  public static final int MAX_SIZE_ERROR = 32;
-  public static final int INSERT_ERROR = 33;
-  public static final int INSERT_SUCCESS = 34;
+  int GEOFENCE_RADIUS = 100;
+  int GEOFENCE_LOITERING_DELAY = 3 * 1000;
+
+
+  int LOADER_ID = 20;
+  int MAX_GEOFENCE_SIZE = 100;
 
   /**
    * time picker constants
    */
-  public static final int FROM_TIME = 40;
-  public static final int TO_TIME = 41;
+  int FROM_TIME = 40;
+  int TO_TIME = 41;
 
   /**
    * night mode pending intent IDs
    */
-  public static final int FROM_TIME_REQUEST_CODE = 50;
-  public static final int TO_TIME_REQUEST_CODE = 51;
+  int FROM_TIME_REQUEST_CODE = 50;
+  int TO_TIME_REQUEST_CODE = 51;
+
 }

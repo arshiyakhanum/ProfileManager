@@ -22,14 +22,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.arshiya.mapsapi.R;
-import com.arshiya.mapsapi.common.Constants;
 import com.arshiya.mapsapi.common.Fonts;
-import com.arshiya.mapsapi.ui.adapters.ProfileListCustomAdapter;
 import com.arshiya.mapsapi.geofence.GeofenceErrorMessage;
 import com.arshiya.mapsapi.geofence.GeofenceTransitionIntentService;
 import com.arshiya.mapsapi.profilemanager.UpdateProfile;
 import com.arshiya.mapsapi.storage.contentprovider.LocationsDatabase;
 import com.arshiya.mapsapi.storage.sharedpreference.ProfileManagerSharedPref;
+import com.arshiya.mapsapi.ui.adapters.ProfileListCustomAdapter;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
@@ -38,6 +37,8 @@ import com.google.android.gms.location.LocationServices;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.arshiya.mapsapi.common.Constants.LOADER_ID;
 
 public class ProfilesListActivity extends Activity
     implements LoaderManager.LoaderCallbacks<Cursor>, ProfileListCustomAdapter.AdapterCallback,
@@ -133,7 +134,7 @@ public class ProfilesListActivity extends Activity
   private void removeAllGeofences() {
     LocationServices.GeofencingApi.removeGeofences(mGoogleApiClient, getGeofencePendingIntent())
         .setResultCallback(this);
-    getLoaderManager().restartLoader(Constants.LOADER_ID, null, this);
+    getLoaderManager().restartLoader(LOADER_ID, null, this);
     LocationsDatabase db = new LocationsDatabase(ProfilesListActivity.this);
     ProfileManagerSharedPref profileManagerSharedPref =
         ProfileManagerSharedPref.gcSharedPreferenceInstance(this);
@@ -155,7 +156,7 @@ public class ProfilesListActivity extends Activity
   @Override protected void onResume() {
     super.onResume();
     updateUI();
-    getLoaderManager().initLoader(Constants.LOADER_ID, null, this);
+    getLoaderManager().initLoader(LOADER_ID, null, this);
     if (!mGoogleApiClient.isConnected()) {
       mGoogleApiClient.connect();
     }
@@ -195,7 +196,7 @@ public class ProfilesListActivity extends Activity
 
   @Override public void onDeleteComplete(String tag) {
     updateUI();
-    getLoaderManager().restartLoader(Constants.LOADER_ID, null, this);
+    getLoaderManager().restartLoader(LOADER_ID, null, this);
 
     removeGeofenceByTag(tag);
   }

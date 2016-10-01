@@ -10,10 +10,11 @@ import android.os.RemoteException;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.arshiya.mapsapi.common.Constants;
-
 import java.io.IOException;
 import java.util.List;
+
+import static com.arshiya.mapsapi.common.Constants.ACTION_SEARCH;
+
 
 /**
  * Created by arshiya on 10/30/2015.
@@ -69,7 +70,7 @@ public class PlaceSearchHandler {
             }
             Message result = Message.obtain();
             result.obj = addresses;
-            result.arg1 = Constants.ACTION_SEARCH;
+            result.arg1 = ACTION_SEARCH;
 
             try {
                 mMessenger.send(result);

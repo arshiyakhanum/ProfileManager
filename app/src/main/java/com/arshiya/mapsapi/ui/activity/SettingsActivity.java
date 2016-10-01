@@ -18,7 +18,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.arshiya.mapsapi.R;
-import com.arshiya.mapsapi.common.Constants;
 import com.arshiya.mapsapi.common.Fonts;
 import com.arshiya.mapsapi.profilemanager.UpdateProfile;
 import com.arshiya.mapsapi.settings.NightModeEndIntentService;
@@ -27,8 +26,13 @@ import com.arshiya.mapsapi.storage.sharedpreference.ProfileManagerSharedPref;
 
 import java.util.Calendar;
 
+import static com.arshiya.mapsapi.common.Constants.FROM_TIME;
+import static com.arshiya.mapsapi.common.Constants.FROM_TIME_REQUEST_CODE;
+import static com.arshiya.mapsapi.common.Constants.TO_TIME;
+import static com.arshiya.mapsapi.common.Constants.TO_TIME_REQUEST_CODE;
+
 public class SettingsActivity extends Activity
-    implements CompoundButton.OnCheckedChangeListener, View.OnClickListener {
+        implements CompoundButton.OnCheckedChangeListener, View.OnClickListener {
 
   private static final String TAG = SettingsActivity.class.getSimpleName();
   private CheckBox mNightModeCB;
@@ -44,7 +48,8 @@ public class SettingsActivity extends Activity
   private int mToHour;
   private int mToMinute;
 
-  @Override protected void onCreate(Bundle savedInstanceState) {
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_settings);
 
@@ -109,13 +114,14 @@ public class SettingsActivity extends Activity
       actionBar.setDisplayShowTitleEnabled(false);
       actionBar.setCustomView(custom_view);
       actionBar.setBackgroundDrawable(
-          new ColorDrawable(getResources().getColor(R.color.backgroundColor)));
+              new ColorDrawable(getResources().getColor(R.color.backgroundColor)));
       //to remove Application icon for this activity
       actionBar.setIcon(new ColorDrawable(getResources().getColor(android.R.color.transparent)));
     }
   }
 
-  @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+  @Override
+  public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
     int id = buttonView.getId();
 
     switch (id) {
@@ -151,7 +157,7 @@ public class SettingsActivity extends Activity
         mProfileManagerSharedPref.nightModeOn(false);
 
         new UpdateProfile(mProfileManagerSharedPref.getSavedRingerMode(),
-            (AudioManager) getSystemService(AUDIO_SERVICE));
+                (AudioManager) getSystemService(AUDIO_SERVICE));
       }
 
       cancelAlarm();
@@ -167,8 +173,8 @@ public class SettingsActivity extends Activity
      */
     Intent startIntent = new Intent(SettingsActivity.this, NightModeStartIntentService.class);
     PendingIntent startPI =
-        PendingIntent.getBroadcast(this, Constants.FROM_TIME_REQUEST_CODE, startIntent,
-            PendingIntent.FLAG_UPDATE_CURRENT);
+            PendingIntent.getBroadcast(this, FROM_TIME_REQUEST_CODE, startIntent,
+                    PendingIntent.FLAG_UPDATE_CURRENT);
 
     alarm.cancel(startPI);
 
@@ -177,13 +183,14 @@ public class SettingsActivity extends Activity
      */
     Intent endIntent = new Intent(SettingsActivity.this, NightModeEndIntentService.class);
     PendingIntent endPI =
-        PendingIntent.getBroadcast(this, Constants.TO_TIME_REQUEST_CODE, endIntent,
-            PendingIntent.FLAG_UPDATE_CURRENT);
+            PendingIntent.getBroadcast(this, TO_TIME_REQUEST_CODE, endIntent,
+                    PendingIntent.FLAG_UPDATE_CURRENT);
 
     alarm.cancel(endPI);
   }
 
-  @Override public void onClick(View v) {
+  @Override
+  public void onClick(View v) {
     int id = v.getId();
 
     switch (id) {
@@ -200,14 +207,14 @@ public class SettingsActivity extends Activity
 
       case R.id.from_time_holder:
         Intent timePickerIntent = new Intent(this, TimeSetActivity.class);
-        timePickerIntent.putExtra("type", Constants.FROM_TIME);
-        startActivityForResult(timePickerIntent, Constants.FROM_TIME);
+        timePickerIntent.putExtra("type", FROM_TIME);
+        startActivityForResult(timePickerIntent, FROM_TIME);
         break;
 
       case R.id.to_time_holder:
         Intent timePickerIntent2 = new Intent(this, TimeSetActivity.class);
-        timePickerIntent2.putExtra("type", Constants.TO_TIME);
-        startActivityForResult(timePickerIntent2, Constants.TO_TIME);
+        timePickerIntent2.putExtra("type", TO_TIME);
+        startActivityForResult(timePickerIntent2, TO_TIME);
         break;
 
       default:
@@ -215,8 +222,9 @@ public class SettingsActivity extends Activity
     }
   }
 
-  @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-    if (requestCode == Constants.FROM_TIME || requestCode == Constants.TO_TIME) {
+  @Override
+  protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    if (requestCode == FROM_TIME || requestCode == TO_TIME) {
       if (RESULT_OK == resultCode) {
         showScheduleHolder();
         setAlarm(mProfileManagerSharedPref.getStartTime(), mProfileManagerSharedPref.getEndTime());
@@ -241,7 +249,7 @@ public class SettingsActivity extends Activity
       mProfileManagerSharedPref.nightModeOn(false);
 
       new UpdateProfile(mProfileManagerSharedPref.getSavedRingerMode(),
-          (AudioManager) getSystemService(AUDIO_SERVICE));
+              (AudioManager) getSystemService(AUDIO_SERVICE));
     }
 
     cancelAlarm();
@@ -292,18 +300,18 @@ public class SettingsActivity extends Activity
      */
     Intent startIntent = new Intent(SettingsActivity.this, NightModeStartIntentService.class);
     PendingIntent startPI =
-        PendingIntent.getService(this, Constants.FROM_TIME_REQUEST_CODE, startIntent,
-            PendingIntent.FLAG_CANCEL_CURRENT);
+            PendingIntent.getService(this, FROM_TIME_REQUEST_CODE, startIntent,
+                    PendingIntent.FLAG_CANCEL_CURRENT);
 
     alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, startTime, AlarmManager.INTERVAL_DAY,
-        startPI);
+            startPI);
 
     /**
      * set end alarm
      */
     Intent endIntent = new Intent(SettingsActivity.this, NightModeEndIntentService.class);
-    PendingIntent endPI = PendingIntent.getService(this, Constants.TO_TIME_REQUEST_CODE, endIntent,
-        PendingIntent.FLAG_CANCEL_CURRENT);
+    PendingIntent endPI = PendingIntent.getService(this, TO_TIME_REQUEST_CODE, endIntent,
+            PendingIntent.FLAG_CANCEL_CURRENT);
 
     alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, endTime, AlarmManager.INTERVAL_DAY, endPI);
   }

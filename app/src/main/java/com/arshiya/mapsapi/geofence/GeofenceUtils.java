@@ -5,13 +5,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import com.arshiya.mapsapi.common.Constants;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
+
+import static com.arshiya.mapsapi.common.Constants.GEOFENCE_RADIUS;
+
+
 
 /**
  * Created by arshiya on 11/11/2015.
@@ -82,7 +85,7 @@ public class GeofenceUtils {
      */
     private Geofence getGeofenceToAdd(LatLng latLng) {
         Geofence geofence = new Geofence.Builder().setRequestId(latLng.toString())
-                .setCircularRegion(latLng.latitude, latLng.longitude, Constants.GEOFENCE_RADIUS)
+                .setCircularRegion(latLng.latitude, latLng.longitude, GEOFENCE_RADIUS)
                 .setExpirationDuration(Geofence.NEVER_EXPIRE)
                 .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT)
                 .build();

@@ -9,9 +9,13 @@ import android.widget.TextView;
 
 import com.arshiya.mapsapi.R;
 
+import static com.arshiya.mapsapi.common.Constants.ACTION_OK;
+import static com.arshiya.mapsapi.common.Constants.ACTON_CANCEL;
+
 /**
  * Created by arshiya on 11/11/2015.
  */
+
 public class ConfirmationDialog {
 
   private static final String TAG = ConfirmationDialog.class.getSimpleName();
@@ -20,9 +24,9 @@ public class ConfirmationDialog {
   private static OnClickCallback mOnClickCallback;
 
   public static AlertDialog getDialog(Context context, String title, String description,
-      String query) {
+                                      String query) {
     LayoutInflater inflater =
-        (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     View dialogView = inflater.inflate(R.layout.confirmation_pop_up, null);
 
     mOnClickCallback = (OnClickCallback) context;
@@ -45,25 +49,20 @@ public class ConfirmationDialog {
     cancel.setTypeface(Fonts.ROBOTOMEDIUM);
 
     ok.setOnClickListener(new View.OnClickListener() {
-      @Override public void onClick(View v) {
-        mOnClickCallback.onClickCD(Constants.ACTION_OK);
+      @Override
+      public void onClick(View v) {
+        mOnClickCallback.onClickCD(ACTION_OK);
       }
     });
     cancel.setOnClickListener(new View.OnClickListener() {
-      @Override public void onClick(View v) {
-        mOnClickCallback.onClickCD(Constants.ACTON_CANCEL);
+      @Override
+      public void onClick(View v) {
+        mOnClickCallback.onClickCD(ACTON_CANCEL);
       }
     });
     mDialog.setView(dialogView);
 
     titleTV.setText(title);
-
-    //        if (null != mSelectedAddress) {
-    //            description += mSelectedAddress;
-    //        } else {
-    //            mSelectedAddress = mSelectedLatLng.toString();
-    //            description += mSelectedLatLng;
-    //        }
     contentTV.setText(description);
     queryTV.setText(query);
     return mDialog;
