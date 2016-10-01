@@ -49,6 +49,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Circle;
@@ -72,11 +73,11 @@ import static com.arshiya.mapsapi.common.Constants.ACTION_AUTOCOMPLETE;
 import static com.arshiya.mapsapi.common.Constants.INSERT_ERROR;
 import static com.arshiya.mapsapi.common.Constants.LOCATION_SINGLE;
 
-public class MapsActivity extends FragmentActivity
+public class MapsActivity extends BaseActivity
         implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
         View.OnClickListener, GoogleMap.OnMapClickListener, GoogleMap.OnMarkerClickListener,
         GoogleMap.OnMapLongClickListener, GoogleMap.OnMapLoadedCallback,
-        ConfirmationDialog.OnClickCallback {
+        ConfirmationDialog.OnClickCallback, OnMapReadyCallback {
 
   private static final String TAG = MapsActivity.class.getSimpleName();
   private static final int CONNECTION_FAILURE_RESOLUTION_REQUEST = 100;
@@ -275,23 +276,9 @@ public class MapsActivity extends FragmentActivity
     // Do a null check to confirm that we have not already instantiated the map.
     if (mMap == null) {
       // Try to obtain the map from the SupportMapFragment.
-      mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
+      ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map))
+          .getMapAsync(this);
       // Check if we were successful in obtaining the map.
-      if (mMap != null) {
-        mMap.setMyLocationEnabled(true);
-        mMap.setTrafficEnabled(true);
-        mMap.getUiSettings().setMyLocationButtonEnabled(true);
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(17.0f));
-        mMap.getUiSettings().setMapToolbarEnabled(false);
-        mMap.setOnMapClickListener(this);
-        mMap.setOnMapLongClickListener(this);
-        mMap.setOnMapLoadedCallback(this);
-        mMap.setOnMarkerClickListener(this);
-        mLocation = mMap.getMyLocation();
-        setUpMap();
-      } else {
-        Log.e(TAG, "setupmap : map is null");
-      }
     } else {
     }
   }
@@ -502,6 +489,24 @@ public class MapsActivity extends FragmentActivity
     }
     mDialog = null;
     mNewLocationDialog = null;
+  }
+
+  @Override public void onMapReady(GoogleMap googleMap) {
+    if (mMap != null) {
+      mMap.setMyLocationEnabled(true);
+      mMap.setTrafficEnabled(true);
+      mMap.getUiSettings().setMyLocationButtonEnabled(true);
+      mMap.animateCamera(CameraUpdateFactory.zoomTo(17.0f));
+      mMap.getUiSettings().setMapToolbarEnabled(false);
+      mMap.setOnMapClickListener(this);
+      mMap.setOnMapLongClickListener(this);
+      mMap.setOnMapLoadedCallback(this);
+      mMap.setOnMarkerClickListener(this);
+      mLocation = mMap.getMyLocation();
+      setUpMap();
+    } else {
+      Log.e(TAG, "setupmap : map is null");
+    }
   }
 
   /**
