@@ -38,6 +38,10 @@
 
     <color name="divider">#3f4247</color>
 
+<!-- Place holders to be changed later-->
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
     <!--100% — FF-->
     <!--95% — F2-->
     <!--90% — E6-->

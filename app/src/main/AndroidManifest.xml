@@ -1,121 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.arshiya.mapsapi"
-    >
+    package="com.arshiya.mapsapi">
 
-    <permission
-        android:name="com.javapapers.currentlocationinmap.permission.MAPS_RECEIVE"
-        android:protectionLevel="signature" />
+  <permission
+      android:name="com.javapapers.currentlocationinmap.permission.MAPS_RECEIVE"
+      android:protectionLevel="signature"/>
 
-    <uses-permission android:name="com.javapapers.currentlocationinmap.permission.MAPS_RECEIVE" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+  <uses-permission android:name="com.javapapers.currentlocationinmap.permission.MAPS_RECEIVE"/>
+  <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+  <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+  <uses-permission android:name="android.permission.INTERNET"/>
+  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+  <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES"/>
 
-    <!--
+  <!--
      The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but are recommended.
     -->
-
-    <!--
+  <!--
  The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but are recommended.
     -->
-    <application
-        android:name=".common.ProfileManagerApplication"
-        android:allowBackup="true"
-        android:icon="@mipmap/launcher"
-        android:label="@string/app_name">
+  <application
+      android:name=".common.ProfileManagerApplication"
+      android:allowBackup="true"
+      android:icon="@mipmap/launcher"
+      android:label="@string/app_name">
 
-        <!-- <meta-data -->
-        <!-- android:name="com.google.android.geo.API_KEY" -->
-        <!-- android:value="@string/geo_api_key" /> -->
+    <!-- <meta-data -->
+    <!-- android:name="com.google.android.geo.API_KEY" -->
+    <!-- android:value="@string/geo_api_key" /> -->
 
-        <meta-data
-            android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />
-        <!-- <meta-data -->
-        <!-- android:name="com.google.android.maps.v2.API_KEY" -->
-        <!-- android:value="@string/google_maps_key" /> -->
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key" />
+    <meta-data
+        android:name="com.google.android.gms.version"
+        android:value="@integer/google_play_services_version"/>
+    <!-- <meta-data -->
+    <!-- android:name="com.google.android.maps.v2.API_KEY" -->
+    <!-- android:value="@string/google_maps_key" /> -->
+    <meta-data
+        android:name="com.google.android.geo.API_KEY"
+        android:value="@string/google_maps_key"/>
 
-        <activity
-            android:name=".ui.activity.MapsActivity"
-            android:label="@string/title_activity_maps"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Holo.NoActionBar" />
+    <activity
+        android:name=".ui.activity.MapsActivity"
+        android:label="@string/title_activity_maps"
+        android:screenOrientation="portrait"
+        android:theme="@style/AppTheme.NoActionBar"/>
 
-        <provider
-            android:name=".storage.contentprovider.LocationsContentProvider"
-            android:authorities="com.arshiya.mapsapi.provider.locations"
-            android:exported="false" />
+    <provider
+        android:name=".storage.contentprovider.LocationsContentProvider"
+        android:authorities="com.arshiya.mapsapi.provider.locations"
+        android:exported="false"/>
 
-        <activity
-            android:name=".ui.activity.LocationDetailsGetterActivity"
-            android:label="@string/title_activity_location_details_getter"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Holo.Dialog.NoActionBar">
-        </activity>
-        <activity
-            android:name=".ui.activity.MainActivity"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Holo.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+    <activity
+        android:name=".ui.activity.LocationDetailsGetterActivity"
+        android:label="@string/title_activity_location_details_getter"
+        android:screenOrientation="portrait"
+        android:theme="@android:style/Theme.Holo.Dialog.NoActionBar">
+    </activity>
+    <activity
+        android:name=".ui.activity.MainActivity"
+        android:label="@string/app_name"
+        android:screenOrientation="portrait"
+        android:theme="@android:style/Theme.Holo.NoActionBar">
 
-        <activity
-            android:name=".ui.activity.ProfilesListActivity"
-            android:label="@string/title_activity_geofence"
-            android:launchMode="singleTask"
-            android:parentActivityName=".ui.activity.MainActivity"
-            android:screenOrientation="portrait">
+    </activity>
+    <activity
+        android:name=".ui.activity.ProfilesListActivity"
+        android:label="@string/title_activity_geofence"
+        android:launchMode="singleTask"
+        android:parentActivityName=".ui.activity.MainActivity"
+        android:screenOrientation="portrait">
+    </activity>
 
-        </activity>
+    <service android:name=".geofence.GeofenceTransitionIntentService">
+    </service>
 
-        <service android:name=".geofence.GeofenceTransitionIntentService">
+    <activity
+        android:name=".ui.activity.SettingsActivity"
+        android:label="@string/title_activity_settings"
+        android:launchMode="singleTask"
+        android:parentActivityName=".ui.activity.MainActivity"
+        android:screenOrientation="portrait">
+    </activity>
+    <activity
+        android:name=".ui.activity.TimeSetActivity"
+        android:label="@string/title_activity_time_set"
+        android:screenOrientation="portrait"
+        android:theme="@android:style/Theme.Holo.Dialog.NoActionBar">
+    </activity>
 
-        </service>
+    <service android:name=".settings.NightModeEndIntentService"/>
+    <service android:name=".settings.NightModeStartIntentService"/>
+    <!-- <receiver android:name=".incomingcallmanager.IncomingCallBroadcastReceiver"> -->
+    <!-- <intent-filter> -->
+    <!-- <action android:name="android.intent.action.PHONE_STATE"/> -->
+    <!-- </intent-filter> -->
+    <!-- </receiver> -->
+    <activity
+        android:name=".ui.activity.AboutActivity"
+        android:label="@string/title_activity_about"
+        android:launchMode="singleTask"
+        android:parentActivityName=".ui.activity.MainActivity"
+        android:screenOrientation="portrait"
+        android:theme="@android:style/Theme.Holo.NoActionBar">
+    </activity>
+    <activity
+        android:name=".ui.activity.Main2Activity"
+        android:label="@string/title_activity_main2"
+        android:theme="@style/AppTheme.NoActionBar">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN"/>
 
-        <activity
-            android:name=".ui.activity.SettingsActivity"
-            android:label="@string/title_activity_settings"
-            android:launchMode="singleTask"
-            android:parentActivityName=".ui.activity.MainActivity"
-            android:screenOrientation="portrait">
-
-        </activity>
-        <activity
-            android:name=".ui.activity.TimeSetActivity"
-            android:label="@string/title_activity_time_set"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Holo.Dialog.NoActionBar">
-
-        </activity>
-
-        <service android:name=".settings.NightModeEndIntentService" />
-        <service android:name=".settings.NightModeStartIntentService" />
-        <!-- <receiver android:name=".incomingcallmanager.IncomingCallBroadcastReceiver"> -->
-        <!-- <intent-filter> -->
-        <!-- <action android:name="android.intent.action.PHONE_STATE"/> -->
-        <!-- </intent-filter> -->
-        <!-- </receiver> -->
-        <activity
-            android:name=".ui.activity.AboutActivity"
-            android:label="@string/title_activity_about"
-            android:launchMode="singleTask"
-            android:parentActivityName=".ui.activity.MainActivity"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Holo.NoActionBar">
-
-        </activity>
-    </application>
+        <category android:name="android.intent.category.LAUNCHER"/>
+      </intent-filter>
+    </activity>
+  </application>
 
 </manifest>

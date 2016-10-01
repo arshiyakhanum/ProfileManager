@@ -37,6 +37,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -49,7 +50,7 @@ import static com.arshiya.mapsapi.common.Constants.FETCH_FAILED;
 public class MainActivity extends Activity
         implements View.OnClickListener, GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, AdapterView.OnItemClickListener,
-        ConfirmationDialog.OnClickCallback {
+        ConfirmationDialog.OnClickCallback, OnMapReadyCallback {
 
   private static final String TAG = MainActivity.class.getSimpleName();
   public static DrawerLayout mDrawerLayout;
@@ -143,22 +144,8 @@ public class MainActivity extends Activity
     // Do a null check to confirm that we have not already instantiated the map.
     if (mMap == null) {
       // Try to obtain the map from the SupportMapFragment.
-      mMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.home_map)).getMap();
+      ((MapFragment) getFragmentManager().findFragmentById(R.id.home_map)).getMapAsync(this);
       // Check if we were successful in obtaining the map.
-      if (mMap != null) {
-        mMap.setMyLocationEnabled(true);
-        mMap.getUiSettings().setMyLocationButtonEnabled(false);
-        mMap.getUiSettings().setZoomGesturesEnabled(false);
-        mMap.clear();
-        mMap.getUiSettings().setScrollGesturesEnabled(false);
-        mMap.setTrafficEnabled(true);
-        mMap.getUiSettings().setMapToolbarEnabled(false);
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(17.0f));
-        Location location = mMap.getMyLocation();
-        setUpMap(location);
-      } else {
-        Log.e(TAG, "setupmap : map is null");
-      }
     }
   }
 
@@ -283,6 +270,23 @@ public class MainActivity extends Activity
           mDialog.dismiss();
         }
         break;
+    }
+  }
+
+  @Override public void onMapReady(GoogleMap googleMap) {
+    if (mMap != null) {
+      mMap.setMyLocationEnabled(true);
+      mMap.getUiSettings().setMyLocationButtonEnabled(false);
+      mMap.getUiSettings().setZoomGesturesEnabled(false);
+      mMap.clear();
+      mMap.getUiSettings().setScrollGesturesEnabled(false);
+      mMap.setTrafficEnabled(true);
+      mMap.getUiSettings().setMapToolbarEnabled(false);
+      mMap.animateCamera(CameraUpdateFactory.zoomTo(17.0f));
+      Location location = mMap.getMyLocation();
+      setUpMap(location);
+    } else {
+      Log.e(TAG, "setupmap : map is null");
     }
   }
 
