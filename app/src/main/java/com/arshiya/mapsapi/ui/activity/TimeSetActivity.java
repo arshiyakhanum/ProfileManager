@@ -11,12 +11,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.arshiya.mapsapi.R;
-import com.arshiya.mapsapi.common.Constants;
 import com.arshiya.mapsapi.common.Fonts;
 import com.arshiya.mapsapi.settings.CustomInputFilter;
 import com.arshiya.mapsapi.storage.sharedpreference.ProfileManagerSharedPref;
 
 import java.util.Calendar;
+
+import static com.arshiya.mapsapi.common.Constants.FROM_TIME;
+import static com.arshiya.mapsapi.common.Constants.TO_TIME;
 
 public class TimeSetActivity extends Activity implements View.OnClickListener {
 
@@ -40,7 +42,8 @@ public class TimeSetActivity extends Activity implements View.OnClickListener {
   private int mType;
   private ProfileManagerSharedPref mProfileManagerSharedPref;
 
-  @Override protected void onCreate(Bundle savedInstanceState) {
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.time_picker);
 
@@ -64,12 +67,12 @@ public class TimeSetActivity extends Activity implements View.OnClickListener {
     mCancel.setTypeface(Fonts.ROBOTOMEDIUM);
     mSave.setTypeface(Fonts.ROBOTOMEDIUM);
 
-    mTp_minute.setFilters(new InputFilter[] { new CustomInputFilter("0", "59") });
-    mTp_hour.setFilters(new InputFilter[] { new CustomInputFilter("0", "23") });
+    mTp_minute.setFilters(new InputFilter[]{new CustomInputFilter("0", "59")});
+    mTp_hour.setFilters(new InputFilter[]{new CustomInputFilter("0", "23")});
 
     mType = getIntent().getIntExtra("type", 0);
 
-    if (mType == Constants.FROM_TIME) {
+    if (mType == FROM_TIME) {
       mTitle_time.setText("Start time");
     } else {
       mTitle_time.setText("End time");
@@ -85,7 +88,8 @@ public class TimeSetActivity extends Activity implements View.OnClickListener {
     mSave.setOnClickListener(this);
 
     mCancel.setOnClickListener(new View.OnClickListener() {
-      @Override public void onClick(View v) {
+      @Override
+      public void onClick(View v) {
 
         finish();
       }
@@ -135,7 +139,8 @@ public class TimeSetActivity extends Activity implements View.OnClickListener {
     }
   }
 
-  @Override public void onClick(View v) {
+  @Override
+  public void onClick(View v) {
     int id = v.getId();
     switch (id) {
       case R.id.tp_save:
@@ -155,14 +160,14 @@ public class TimeSetActivity extends Activity implements View.OnClickListener {
 
   private void saveTime() {
     switch (mType) {
-      case Constants.FROM_TIME:
+      case FROM_TIME:
         Bundle startBundle = new Bundle();
         startBundle.putInt("start_hour", Integer.parseInt(mTp_hour.getText().toString()));
         startBundle.putInt("start_minute", Integer.parseInt(mTp_minute.getText().toString()));
         mProfileManagerSharedPref.setStartTime(startBundle);
         break;
 
-      case Constants.TO_TIME:
+      case TO_TIME:
         Bundle endBundle = new Bundle();
         endBundle.putInt("end_hour", Integer.parseInt(mTp_hour.getText().toString()));
         endBundle.putInt("end_minute", Integer.parseInt(mTp_minute.getText().toString()));

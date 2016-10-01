@@ -17,6 +17,10 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import static com.arshiya.mapsapi.common.Constants.RINGER_MODE_NORMAL;
+import static com.arshiya.mapsapi.common.Constants.RINGER_MODE_VIBRATE;
+import static com.arshiya.mapsapi.common.Constants.RINGER_MODE_SILENT;
+
 /**
  * Created by arshiya on 11/6/2015.
  */
@@ -112,15 +116,15 @@ public class MapDataProvider {
     private int getOutlineColor(int pt) {
         int color = mContext.getResources().getColor(R.color.red_outer);
         switch (pt) {
-            case Constants.PROFILE_NORMAL:
+            case RINGER_MODE_NORMAL:
                 color = mContext.getResources().getColor(R.color.green);
                 break;
 
-            case Constants.PROFILE_SILENT:
+            case RINGER_MODE_SILENT:
                 color = mContext.getResources().getColor(R.color.red_outer);
                 break;
 
-            case Constants.PROFILE_VIBRATE:
+            case RINGER_MODE_VIBRATE:
                 color = mContext.getResources().getColor(R.color.circle_ouline_blue);
                 break;
         }
@@ -130,15 +134,15 @@ public class MapDataProvider {
     private int getStrokeColor(int pt) {
         int color = mContext.getResources().getColor(R.color.redO30);
         switch (pt) {
-            case Constants.PROFILE_NORMAL:
+            case RINGER_MODE_NORMAL:
                 color = mContext.getResources().getColor(R.color.greenO30);
                 break;
 
-            case Constants.PROFILE_SILENT:
+            case RINGER_MODE_SILENT:
                 color = mContext.getResources().getColor(R.color.redO30);
                 break;
 
-            case Constants.PROFILE_VIBRATE:
+            case RINGER_MODE_VIBRATE:
                 color = mContext.getResources().getColor(R.color.circle_stroke_blue);
                 break;
         }

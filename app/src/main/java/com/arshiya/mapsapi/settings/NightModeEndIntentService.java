@@ -4,6 +4,7 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.util.Log;
+
 import com.arshiya.mapsapi.profilemanager.UpdateProfile;
 import com.arshiya.mapsapi.storage.sharedpreference.ProfileManagerSharedPref;
 
@@ -27,11 +28,12 @@ public class NightModeEndIntentService extends IntentService {
     super(name);
   }
 
-  @Override protected void onHandleIntent(Intent intent) {
+  @Override
+  protected void onHandleIntent(Intent intent) {
     Log.d(TAG, " onHandle");
     AudioManager audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
     ProfileManagerSharedPref profileManagerSharedPref =
-        ProfileManagerSharedPref.gcSharedPreferenceInstance(this);
+            ProfileManagerSharedPref.gcSharedPreferenceInstance(this);
     profileManagerSharedPref.nightModeOn(false);
     new UpdateProfile(profileManagerSharedPref.getSavedRingerMode(), audioManager);
   }

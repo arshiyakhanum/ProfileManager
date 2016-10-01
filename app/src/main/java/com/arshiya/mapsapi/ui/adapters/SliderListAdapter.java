@@ -17,12 +17,12 @@ import java.util.ArrayList;
 /**
  * Created by arshiya on 10/28/2015.
  */
-public class CustomSliderListAdapter extends BaseAdapter {
+public class SliderListAdapter extends BaseAdapter {
 
   private ArrayList<SliderListItem> mSliderListItemList;
   private Context mContext;
 
-  public CustomSliderListAdapter(Context context, ArrayList<SliderListItem> sliderListItems) {
+  public SliderListAdapter(Context context, ArrayList<SliderListItem> sliderListItems) {
     mContext = context;
     mSliderListItemList = sliderListItems;
   }

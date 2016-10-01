@@ -11,8 +11,11 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.arshiya.mapsapi.R;
-import com.arshiya.mapsapi.common.Constants;
 import com.arshiya.mapsapi.common.Fonts;
+
+import static com.arshiya.mapsapi.common.Constants.RINGER_MODE_NORMAL;
+import static com.arshiya.mapsapi.common.Constants.RINGER_MODE_SILENT;
+import static com.arshiya.mapsapi.common.Constants.RINGER_MODE_VIBRATE;
 
 public class LocationDetailsGetterActivity extends Activity implements View.OnClickListener {
 
@@ -31,7 +34,7 @@ public class LocationDetailsGetterActivity extends Activity implements View.OnCl
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_location_details_getter);
 
-    mCurrentSelection = Constants.PROFILE_SILENT;
+    mCurrentSelection = RINGER_MODE_SILENT;
     mSilent = (RadioButton) findViewById(R.id.rb_silent);
     mNormal = (RadioButton) findViewById(R.id.rb_normal);
     mVibrate = (RadioButton) findViewById(R.id.rb_vibrate);
@@ -63,15 +66,15 @@ public class LocationDetailsGetterActivity extends Activity implements View.OnCl
 
     switch (id) {
       case R.id.rb_silent:
-        mCurrentSelection = Constants.PROFILE_SILENT;
+        mCurrentSelection = RINGER_MODE_SILENT;
         break;
 
       case R.id.rb_normal:
-        mCurrentSelection = Constants.PROFILE_NORMAL;
+        mCurrentSelection = RINGER_MODE_NORMAL;
         break;
 
       case R.id.rb_vibrate:
-        mCurrentSelection = Constants.PROFILE_VIBRATE;
+        mCurrentSelection = RINGER_MODE_VIBRATE;
         break;
 
       case R.id.profile_type_option_dialog_ok:

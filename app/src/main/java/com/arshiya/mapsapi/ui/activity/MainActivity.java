@@ -8,11 +8,11 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
 import android.support.v4.widget.DrawerLayout;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -23,14 +23,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.arshiya.mapsapi.R;
-import com.arshiya.mapsapi.mapactivities.SliderListItem;
 import com.arshiya.mapsapi.common.ConfirmationDialog;
-import com.arshiya.mapsapi.common.Constants;
 import com.arshiya.mapsapi.common.Fonts;
 import com.arshiya.mapsapi.errordisplay.AlertDialogClass;
 import com.arshiya.mapsapi.geocodermanager.GeoCoderFetchAddress;
-import com.arshiya.mapsapi.ui.adapters.CustomSliderListAdapter;
+import com.arshiya.mapsapi.mapactivities.SliderListItem;
 import com.arshiya.mapsapi.storage.sharedpreference.ProfileManagerSharedPref;
+import com.arshiya.mapsapi.ui.adapters.SliderListAdapter;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -43,16 +42,20 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 
+import static com.arshiya.mapsapi.common.Constants.ACTION_OK;
+import static com.arshiya.mapsapi.common.Constants.ACTON_CANCEL;
+import static com.arshiya.mapsapi.common.Constants.FETCH_FAILED;
+
 public class MainActivity extends Activity
-    implements View.OnClickListener, GoogleApiClient.ConnectionCallbacks,
-    GoogleApiClient.OnConnectionFailedListener, AdapterView.OnItemClickListener,
-    ConfirmationDialog.OnClickCallback {
+        implements View.OnClickListener, GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener, AdapterView.OnItemClickListener,
+        ConfirmationDialog.OnClickCallback {
 
   private static final String TAG = MainActivity.class.getSimpleName();
   public static DrawerLayout mDrawerLayout;
   private ListView mDrawerList;
   private ArrayList<SliderListItem> mSliderListItems;
-  private CustomSliderListAdapter mDListAdapter;
+  private SliderListAdapter mDListAdapter;
   private GoogleApiClient mGoogleApiClient;
   private LocationManager mLocationManager;
   private GoogleMap mMap;
@@ -64,7 +67,8 @@ public class MainActivity extends Activity
   private AlertDialog mDialog;
   private ProfileManagerSharedPref mProfileManagerSharedPref;
 
-  @Override protected void onCreate(Bundle savedInstanceState) {
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_home_page);
 
@@ -80,9 +84,9 @@ public class MainActivity extends Activity
 
   private void buildGoogleApiClient() {
     mGoogleApiClient = new GoogleApiClient.Builder(this).addConnectionCallbacks(this)
-        .addOnConnectionFailedListener(this)
-        .addApi(LocationServices.API)
-        .build();
+            .addOnConnectionFailedListener(this)
+            .addApi(LocationServices.API)
+            .build();
   }
 
   private void initView() {
@@ -117,7 +121,7 @@ public class MainActivity extends Activity
     mSliderListItems.add(new SliderListItem(itemNameList[1], R.drawable.settings));
     mSliderListItems.add(new SliderListItem(itemNameList[2], R.drawable.about));
 
-    mDListAdapter = new CustomSliderListAdapter(this, mSliderListItems);
+    mDListAdapter = new SliderListAdapter(this, mSliderListItems);
 
     mDrawerList.setAdapter(mDListAdapter);
     mDrawerList.setSelector(android.R.color.holo_blue_dark);
@@ -125,7 +129,8 @@ public class MainActivity extends Activity
     mDrawerList.setOnItemClickListener(this);
   }
 
-  @Override protected void onResume() {
+  @Override
+  protected void onResume() {
     super.onResume();
     if (null != mGoogleApiClient) {
       mGoogleApiClient.connect();
@@ -162,8 +167,8 @@ public class MainActivity extends Activity
     LatLng latLng;
     if (null != location) {
       GeoCoderFetchAddress.getInstance()
-          .init(this, new LatLng(location.getLatitude(), location.getLongitude()),
-              new Messenger(new ResultHandler()));
+              .init(this, new LatLng(location.getLatitude(), location.getLongitude()),
+                      new Messenger(new ResultHandler()));
 
       latLng = new LatLng(location.getLatitude(), location.getLongitude());
     } else {
@@ -174,7 +179,8 @@ public class MainActivity extends Activity
     mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
   }
 
-  @Override public void onClick(View v) {
+  @Override
+  public void onClick(View v) {
     int id = v.getId();
     switch (id) {
       case R.id.navigator_button:
@@ -201,7 +207,7 @@ public class MainActivity extends Activity
 
     if (!gpsEnabled) {
       mDialog = ConfirmationDialog.getDialog(MainActivity.this, "Turn on GPS",
-          "Please turn on GPS to get your location.", "");
+              "Please turn on GPS to get your location.", "");
       mDialog.show();
     } else {
       Log.d(TAG, "GPS is enabled");
@@ -210,7 +216,7 @@ public class MainActivity extends Activity
 
   private void checkNetworkAvailability() {
     final ConnectivityManager connMgr =
-        (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+            (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
 
     NetworkInfo activeNetwork = connMgr.getActiveNetworkInfo();
     boolean is_connected = (activeNetwork != null && activeNetwork.isConnectedOrConnecting());
@@ -239,7 +245,8 @@ public class MainActivity extends Activity
     return true;
   }
 
-  @Override public void onConnected(Bundle bundle) {
+  @Override
+  public void onConnected(Bundle bundle) {
     Log.d(TAG, "google api client : connected");
     Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
 
@@ -250,17 +257,20 @@ public class MainActivity extends Activity
     }
   }
 
-  @Override public void onConnectionSuspended(int i) {
+  @Override
+  public void onConnectionSuspended(int i) {
 
   }
 
-  @Override public void onConnectionFailed(ConnectionResult connectionResult) {
+  @Override
+  public void onConnectionFailed(ConnectionResult connectionResult) {
 
   }
 
-  @Override public void onClickCD(int state) {
+  @Override
+  public void onClickCD(int state) {
     switch (state) {
-      case Constants.ACTION_OK:
+      case ACTION_OK:
         if (null != mDialog && mDialog.isShowing()) {
           Intent gpsIntent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
           startActivity(gpsIntent);
@@ -268,7 +278,7 @@ public class MainActivity extends Activity
         }
         break;
 
-      case Constants.ACTON_CANCEL:
+      case ACTON_CANCEL:
         if (null != mDialog && mDialog.isShowing()) {
           mDialog.dismiss();
         }
@@ -277,12 +287,13 @@ public class MainActivity extends Activity
   }
 
   private class ResultHandler extends Handler {
-    @Override public void handleMessage(Message msg) {
+    @Override
+    public void handleMessage(Message msg) {
       String address = msg.obj.toString();
-      if (Constants.FETCH_FAILED == msg.arg2) {
+      if (FETCH_FAILED == msg.arg2) {
         Log.e(TAG, " Fetch failed...");
         String savedAddress = mProfileManagerSharedPref.getSavedAddress(
-            new LatLng(mLocation.getLatitude(), mLocation.getLongitude()));
+                new LatLng(mLocation.getLatitude(), mLocation.getLongitude()));
         if (savedAddress.equalsIgnoreCase("")) {
           Log.d(TAG, "Not a saved address");
         } else {
@@ -290,14 +301,15 @@ public class MainActivity extends Activity
         }
       } else {
         mProfileManagerSharedPref.saveAddress(address,
-            new LatLng(mLocation.getLatitude(), mLocation.getLongitude()));
+                new LatLng(mLocation.getLatitude(), mLocation.getLongitude()));
       }
 
       mCurrentLocation.setText(address);
     }
   }
 
-  @Override public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+  @Override
+  public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
     switch (position) {
       case 0:
         mDrawerLayout.closeDrawers();
