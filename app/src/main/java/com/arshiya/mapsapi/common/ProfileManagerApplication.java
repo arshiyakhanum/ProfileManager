@@ -2,7 +2,6 @@ package com.arshiya.mapsapi.common;
 
 import android.app.Application;
 import android.content.Context;
-import android.util.Log;
 
 /**
  * Created by arshiya on 10/25/2015.
@@ -23,9 +22,12 @@ public class ProfileManagerApplication extends Application {
     return mProfileManagerApplication;
   }
 
-  @Override public void onCreate() {
+  @Override
+  public void onCreate() {
     super.onCreate();
-    Log.d(TAG, " onCreate");
     mProfileManagerApplication = this;
+
+    Logger.enableDebuggingForDebugBuild(this);
+    Logger.setLogLevel(Logger.VERBOSE);
   }
 }

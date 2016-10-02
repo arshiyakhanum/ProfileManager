@@ -5,6 +5,7 @@ package com.arshiya.mapsapi.common;
  */
 public interface Constants {
 
+  String APP_VERSION_NAME = "1.0";
   String GOOGLE_PLACES_AUTOCOMPLETE_URL = "https://maps.googleapis.com/maps/api/place/autocomplete/";
   String BROWSER_API_KEY = "key=AIzaSyDwQPWM53Jffxg1hVelNV86mqeJu35yAIo";
 
